@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 数据下发 -->
+    <bean id="msgSenderTask" class="com.tiza.util.task.impl.MSGSenderTask"/>
+    <bean id="msgSenderJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="msgSenderTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="msgSenderTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="msgSenderJobDetail"/>
+        <property name="startDelay" value="1"/>
+        <property name="repeatInterval" value="1000"/>
+    </bean>
+
+    <!-- 命令应答 -->
+    <bean id="waitACKTask" class="com.tiza.util.task.impl.WaitACKTask"/>
+    <bean id="waitACKJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="waitACKTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="waitACKTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="waitACKJobDetail"/>
+        <property name="startDelay" value="1"/>
+        <property name="repeatInterval" value="2000"/>
+    </bean>
+
+    <!-- 保持在线 -->
+    <bean id="keepAliveOnlineTask" class="com.tiza.util.task.impl.KeepAliveOnlineTask"/>
+    <bean id="keepAliveOnlineJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="keepAliveOnlineTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="keepAliveOnlineTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="keepAliveOnlineJobDetail"/>
+        <property name="startDelay" value="90000"/>
+        <property name="repeatInterval" value="100000"/>
+    </bean>
+
+    <!-- 发送心跳 -->
+    <bean id="heartbeatSenderTask" class="com.tiza.util.task.impl.HeartbeatSenderTask"/>
+    <bean id="heartbeatSenderJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="heartbeatSenderTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="heartbeatSenderTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="heartbeatSenderJobDetail"/>
+        <property name="startDelay" value="120000"/>
+        <property name="repeatInterval" value="120000"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="msgSenderTrigger"/>
+                <ref bean="waitACKTrigger"/>
+                <ref bean="keepAliveOnlineTrigger"/>
+                <ref bean="heartbeatSenderTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

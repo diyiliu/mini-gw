@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="m2Server" class="com.tiza.gw.server.udp.M2Server" init-method="init">
+        <property name="port" value="6600"/>
+    </bean>
+
+
+    <bean class="com.tiza.util.listener.CMDInitializer">
+        <property name="protocols">
+            <list>
+                <value>com.tiza.protocol.m2.M2DataProcess</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
