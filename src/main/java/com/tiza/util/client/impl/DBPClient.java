@@ -35,7 +35,7 @@ public class DBPClient extends Thread implements IClient {
     private ExecutorService executor = Executors.newScheduledThreadPool(1);
 
     private final static int RETRY_COUNT = 5;
-    private int count = -1;
+    private int count = 0;
 
     private String host = "192.168.1.19";
 
@@ -112,8 +112,7 @@ public class DBPClient extends Thread implements IClient {
                 e.printStackTrace();
             }
 
-            count++;
-            logger.info("DBP客户端尝试第{}次重连...", count);
+            logger.info("DBP客户端, 尝试第{}次重连...", ++count);
             connectDBP(host, port);
         }
     }

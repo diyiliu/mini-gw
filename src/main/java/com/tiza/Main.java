@@ -16,15 +16,26 @@ public class Main {
 
         SpringUtil.init();
 
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 5; i++) {
 
             try {
-                Thread.sleep(15000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-           // DBPClient.sendSQL("hello abc: " + i);
+            if (i == 5 || i == 0) {
+                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + "tom" + i + "," + (10 + i) + ")");
+            }else {
+                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", tom" + i + "," + (10 + i) + ")");
+            }
+
+
+//            if (i == 5 || i == 10) {
+//                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", tom" + i + "," + (10 + i) + ")");
+//            } else {
+//                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", 'tom" + i + "'," + (10 + i) + ")");
+//            }
         }
 
     }
