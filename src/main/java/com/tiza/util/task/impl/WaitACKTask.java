@@ -1,6 +1,5 @@
 package com.tiza.util.task.impl;
 
-import com.tiza.protocol.m2.M2DataProcess;
 import com.tiza.protocol.model.RepeatMSG;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
 import com.tiza.util.Common;

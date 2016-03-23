@@ -14,5 +14,10 @@
 
     <bean class="com.tiza.util.SpringUtil"/>
 
+    <bean class="com.tiza.util.client.impl.DBPClient" init-method="init">
+        <property name="host" value="192.168.1.19"/>
+        <property name="port" value="8088"/>
+    </bean>
+
     <bean class="com.tiza.util.client.impl.MonitorClient" init-method="init"/>
 </beans>

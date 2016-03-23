@@ -25,6 +25,7 @@ import java.util.Date;
  */
 
 @Component
+@ChannelHandler.Sharable
 public class M2Handler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
