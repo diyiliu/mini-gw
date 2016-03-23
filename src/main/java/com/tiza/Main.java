@@ -24,7 +24,7 @@ public class Main {
                 e.printStackTrace();
             }
 
-            DBPClient.sendSQL("hello abc: " + i);
+           // DBPClient.sendSQL("hello abc: " + i);
         }
 
     }

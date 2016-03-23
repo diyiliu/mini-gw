@@ -7,13 +7,9 @@
         <property name="port" value="6600"/>
     </bean>
 
-
-    <bean class="com.tiza.util.listener.CMDInitializer">
-        <property name="protocols">
-            <list>
-                <value>com.tiza.protocol.m2.M2DataProcess</value>
-            </list>
-        </property>
+    <bean class="com.tiza.util.client.impl.DBPClient" init-method="init">
+        <property name="host" value="192.168.1.19"/>
+        <property name="port" value="8088"/>
     </bean>
 
 </beans>

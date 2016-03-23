@@ -31,7 +31,6 @@ public class DBPHandler extends ChannelInboundHandlerAdapter{
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info("与DBP服务器建立连接...");
         this.ctx = ctx;
         this.active = Boolean.TRUE;
     }

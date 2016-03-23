@@ -57,6 +57,11 @@ public class DBPClient extends Thread implements IClient {
                         dbpHandler.send(sql);
                     }
                 }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
