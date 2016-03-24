@@ -130,7 +130,7 @@ public class Common {
         return bytes;
     }
 
-    public static String byteToString(byte[] bytes) {
+    public static String bytesToString(byte[] bytes) {
         StringBuffer buf = new StringBuffer();
         for (byte a : bytes) {
             buf.append(String.format("%02X", getNoSin(a))).append(" ");

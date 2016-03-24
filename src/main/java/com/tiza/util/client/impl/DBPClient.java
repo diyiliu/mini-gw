@@ -53,7 +53,6 @@ public class DBPClient extends Thread implements IClient {
                 while (!sqlPool.isEmpty()) {
                     if (dbpHandler.isActive()) {
                         String sql = sqlPool.poll();
-                        logger.info(sql);
                         dbpHandler.send(sql);
                     }
                 }

@@ -1,5 +1,6 @@
 package com.tiza.util.client.handler;
 
+import com.tiza.util.Common;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
@@ -68,7 +69,6 @@ public class DBPHandler extends ChannelInboundHandlerAdapter{
     }
 
     public void send(String sql){
-
         byte[] content = sql.getBytes(Charset.forName("UTF-8"));
         int length = content.length + 3;
         ByteBuf buf = Unpooled.buffer(length);
@@ -76,6 +76,7 @@ public class DBPHandler extends ChannelInboundHandlerAdapter{
         buf.writeByte(0x01);
         buf.writeBytes(content);
 
+        logger.info("发送DBP: [{}]", sql);
         ctx.writeAndFlush(buf);
     }
 

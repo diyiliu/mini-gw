@@ -45,11 +45,11 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         if (bytes.length < 14) {
-            logger.error("数据长度不足14位[{}]", Common.byteToString(bytes));
+            logger.error("数据长度不足14位[{}]", Common.bytesToString(bytes));
         }
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
-        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), Common.toHex(m2Header.getCmd()), Common.byteToString(bytes));
+        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), Common.toHex(m2Header.getCmd()), Common.bytesToString(bytes));
 
         MSGPipeline pipeline = new MSGUDPPipeline(ctx, packet.sender());
         pipeline.setReceiveTime(new Date());

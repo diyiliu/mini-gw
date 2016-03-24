@@ -38,7 +38,7 @@ public class MSGSenderTask implements ITask {
             byte[] content = msg.getContent();
 
             if (onlineCacheProvider.containsKey(terminalId)){
-                logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, Common.toHex(cmd), Common.byteToString(content));
+                logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, Common.toHex(cmd), Common.bytesToString(content));
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
                 pipeline.setSendTime(new Date());
