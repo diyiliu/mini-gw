@@ -74,6 +74,23 @@
         <property name="repeatInterval" value="120000"/>
     </bean>
 
+    <!-- 创建月表 -->
+    <bean id="createMonthTableTask" class="com.tiza.util.task.impl.CreateMonthTableTask" init-method="execute"/>
+    <bean id="createMonthTableJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="createMonthTableTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="createMonthTableTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="createMonthTableJobDetail"/>
+        <property name="cronExpression" value="0 0 1 15 * ?"/>
+    </bean>
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -81,6 +98,7 @@
                 <ref bean="waitACKTrigger"/>
                 <ref bean="keepAliveOnlineTrigger"/>
                 <ref bean="heartbeatSenderTrigger"/>
+                <ref bean="createMonthTableTrigger"/>
             </list>
         </property>
     </bean>

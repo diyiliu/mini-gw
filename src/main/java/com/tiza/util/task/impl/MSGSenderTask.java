@@ -2,7 +2,7 @@ package com.tiza.util.task.impl;
 
 import com.tiza.protocol.model.SendMSG;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.task.ITask;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class MSGSenderTask implements ITask {
     @Override
     public void execute() {
 
-        while (!msgPool.isEmpty()){
+        while (!msgPool.isEmpty()) {
 
             SendMSG msg = msgPool.poll();
 
@@ -37,18 +37,18 @@ public class MSGSenderTask implements ITask {
             int cmd = msg.getCmd();
             byte[] content = msg.getContent();
 
-            if (onlineCacheProvider.containsKey(terminalId)){
-                logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, Common.toHex(cmd), Common.bytesToString(content));
+            if (onlineCacheProvider.containsKey(terminalId)) {
+                //logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
                 pipeline.setSendTime(new Date());
-                pipeline.send(terminalId, content);
+                pipeline.send(terminalId, cmd, content);
             }
         }
 
     }
 
-    public static void send(SendMSG msg){
+    public static void send(SendMSG msg) {
 
         msgPool.add(msg);
     }

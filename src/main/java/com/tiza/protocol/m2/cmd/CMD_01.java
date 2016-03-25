@@ -3,7 +3,7 @@ package com.tiza.protocol.m2.cmd;
 import com.tiza.protocol.m2.M2DataProcess;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class CMD_01 extends M2DataProcess {
         ByteBuf buf = Unpooled.buffer(1 + apnBytes.length + 4 + 2);
         buf.writeByte(apnBytes.length);
         buf.writeBytes(apnBytes);
-        buf.writeBytes(Common.ipToBytes(ip));
+        buf.writeBytes(CommonUtil.ipToBytes(ip));
         buf.writeShort(port);
 
         return headerToSendBytes(buf.array(), this.cmdId, m2Header);

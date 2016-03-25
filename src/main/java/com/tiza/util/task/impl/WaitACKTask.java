@@ -2,7 +2,7 @@ package com.tiza.util.task.impl;
 
 import com.tiza.protocol.model.RepeatMSG;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.task.ITask;
 import org.slf4j.Logger;
@@ -45,11 +45,11 @@ public class WaitACKTask implements ITask {
                     continue;
                 }
                 long count = repeatMSG.getCount();
-                logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", repeatMSG.getTerminal(), Common.toHex(repeatMSG.getCmd()), serial, count);
+                logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", repeatMSG.getTerminal(), CommonUtil.toHex(repeatMSG.getCmd()), serial, count);
                 repeatMSG.setSendTime(now);
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(repeatMSG.getTerminal());
-                pipeline.send(repeatMSG.getTerminal(), repeatMSG.getContent());
+                pipeline.send(repeatMSG.getTerminal(), repeatMSG.getCmd(), repeatMSG.getContent());
 
                 if (count == 3){
                     waitACKCacheProvider.remove(serial);

@@ -4,8 +4,9 @@ import com.tiza.protocol.m2.M2DataProcess;
 import com.tiza.protocol.model.header.M2Header;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
 import com.tiza.protocol.model.pipeline.MSGUDPPipeline;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
+import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description: M2Handler
@@ -44,12 +47,18 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         ByteBuf buf = packet.content();
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
-        if (bytes.length < 14) {
-            logger.error("数据长度不足14位[{}]", Common.bytesToString(bytes));
+        if (bytes.length < 17) {
+            logger.error("数据长度不足17位[{}]", CommonUtil.bytesToString(bytes));
+            return;
         }
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
-        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), Common.toHex(m2Header.getCmd()), Common.bytesToString(bytes));
+        if (m2Header == null) {
+            return;
+        }
+
+        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
+        toDB(m2Header, bytes);
 
         MSGPipeline pipeline = new MSGUDPPipeline(ctx, packet.sender());
         pipeline.setReceiveTime(new Date());
@@ -58,7 +67,7 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
-            logger.error("找不到[命令{}]解析器！", Common.toHex(m2Header.getCmd()));
+            logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
             return;
         }
         process.parse(m2Header.getContent(), m2Header);
@@ -69,5 +78,18 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         logger.error("服务器异常: {}", cause.getMessage());
         cause.printStackTrace();
         ctx.close();
+    }
+
+    public void toDB(M2Header m2Header, byte[] content) {
+
+        Map map = new HashMap() {{
+            this.put("DeviceId", m2Header.getTerminalId());
+            this.put("ReceiveTime", new Date());
+            this.put("DataFlow", 0);
+            this.put("Instruction", CommonUtil.toHex(m2Header.getCmd()));
+            this.put("RawData", CommonUtil.bytesToStr(content));
+        }};
+
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, Constant.DBInfo.DB_CLOUD_RAWDATA, map);
     }
 }

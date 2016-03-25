@@ -35,13 +35,13 @@ public class HeartbeatSenderTask implements ITask {
         Set<Object> keys = onlineCacheProvider.getKeys();
 
         M2DataProcess m2Process = (M2DataProcess) m2CMDCacheProvider.get(HEARTBEAT_CMD);
-        for (Iterator iter = keys.iterator(); iter.hasNext();){
+        for (Iterator iter = keys.iterator(); iter.hasNext(); ) {
             Object key = iter.next();
             MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(key);
 
             String terminal = (String) key;
             byte[] bytes = m2Process.pack(terminal, pipeline.getHeader());
-            pipeline.send(terminal, bytes);
+            pipeline.send(terminal, HEARTBEAT_CMD, bytes);
         }
     }
 }

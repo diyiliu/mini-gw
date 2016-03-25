@@ -3,8 +3,7 @@ package com.tiza.protocol.m2.cmd;
 import com.tiza.protocol.m2.M2DataProcess;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.tiza.util.JacksonUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +23,10 @@ public class CMD_83 extends M2DataProcess{
     public void parse(byte[] content, Header header) {
         M2Header m2Header = (M2Header) header;
 
-        ByteBuf buf = Unpooled.copiedBuffer(content);
+        Position position = renderPosition(content);
 
+        Status status = renderStatu(position.getStatus());
+
+        logger.info("终端[{}], 状态位[{}]", m2Header.getTerminalId(), JacksonUtil.toJson(status));
     }
 }

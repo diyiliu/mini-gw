@@ -7,5 +7,5 @@ package com.tiza.gw.server;
  */
 public interface IServer {
 
-    public void init();
+    void init();
 }

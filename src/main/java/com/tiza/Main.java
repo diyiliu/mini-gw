@@ -1,9 +1,6 @@
 package com.tiza;
 
 import com.tiza.util.SpringUtil;
-import com.tiza.util.client.impl.DBPClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Description: Main
@@ -17,14 +14,15 @@ public class Main {
 
         SpringUtil.init();
 
-        for (int i = 0; i < 3; i++) {
 
-//            if (i % 30 == 10) {
-//                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", tom" + i + "," + (10 + i) + ")");
-//            } else {
-//                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", 'tom" + i + "'," + (10 + i) + ")");
-//            }
+        /**
+        for (int i = 0; i < 10; i++) {
 
+            if (i % 3 == 0) {
+                DBPClient.sendSQL("insert into user(id, name, age)value s(" + i + ", tom" + i + "," + (10 + i) + ")");
+            } else {
+                DBPClient.sendSQL("insert into user(id, name, age)values(" + i + ", 'tom" + i + "'," + (10 + i) + ")");
+            }
 
             if (i % 2 == 0){
                 DBPClient.sendSQL("update user set age=" + i + "where id=" + i);
@@ -34,7 +32,6 @@ public class Main {
 
             //DBPClient.sendSQL("update user set age=" + (i + 100) + " where id=" + i/10);
 
-        }
-
+        }*/
     }
 }

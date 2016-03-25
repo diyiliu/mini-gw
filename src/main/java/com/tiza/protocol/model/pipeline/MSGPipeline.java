@@ -15,7 +15,7 @@ public abstract class MSGPipeline {
     private Date sendTime;
     private Header header;
 
-    public abstract void send(String terminal, byte[] bytes);
+    public abstract void send(String terminal, int cmd, byte[] bytes);
 
     public Date getReceiveTime() {
         return receiveTime;

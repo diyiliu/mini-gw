@@ -5,7 +5,7 @@ import com.tiza.protocol.model.RepeatMSG;
 import com.tiza.protocol.model.SendMSG;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.task.impl.MSGSenderTask;
 import io.netty.buffer.ByteBuf;
@@ -44,10 +44,14 @@ public class M2DataProcess implements IDataProcess {
 
         ByteBuf buf = Unpooled.copiedBuffer(bytes);
         int length = buf.readUnsignedShort();
+        if (buf.readableBytes() < length - 2 + 3) {
+            logger.error("数据包不完整！[{}]", CommonUtil.bytesToString(bytes));
+            return null;
+        }
 
         byte[] termi = new byte[5];
         buf.readBytes(termi);
-        String terminalId = Common.parseSIM(termi);
+        String terminalId = CommonUtil.parseSIM(termi);
 
         int version = buf.readByte();
 
@@ -85,7 +89,7 @@ public class M2DataProcess implements IDataProcess {
 
         ByteBuf buf = Unpooled.buffer(header.getLength());
         buf.writeShort(header.getLength());
-        buf.writeBytes(Common.packSIM(header.getTerminalId()));
+        buf.writeBytes(CommonUtil.packSIM(header.getTerminalId()));
         buf.writeByte(header.getVersion());
         buf.writeByte(header.getFactory());
         buf.writeByte(header.getTerminalType());
@@ -101,7 +105,7 @@ public class M2DataProcess implements IDataProcess {
 
         ByteBuf buf = Unpooled.buffer(header.getLength() + 3);
         buf.writeShort(header.getLength());
-        buf.writeBytes(Common.packSIM(header.getTerminalId()));
+        buf.writeBytes(CommonUtil.packSIM(header.getTerminalId()));
         buf.writeByte(header.getVersion());
         buf.writeByte(header.getFactory());
         buf.writeByte(header.getTerminalType());
@@ -123,7 +127,7 @@ public class M2DataProcess implements IDataProcess {
         header.setContent(content);
 
         byte[] bytes = headerToContent(header);
-        byte check = Common.getCheck(bytes);
+        byte check = CommonUtil.getCheck(bytes);
 
         header.setCheck(check);
 
@@ -203,9 +207,10 @@ public class M2DataProcess implements IDataProcess {
         int direction = buf.readByte();
         byte[] heightBytes = new byte[2];
         buf.readBytes(heightBytes);
-        int height = Common.renderHeight(heightBytes);
-        byte[] status = new byte[4];
-        buf.readBytes(status);
+        int height = CommonUtil.renderHeight(heightBytes);
+        byte[] statusBytes = new byte[4];
+        buf.readBytes(statusBytes);
+        long status = CommonUtil.bytesToLong(statusBytes);
 
         Date dateTime = null;
         byte[] dateBytes = null;
@@ -215,7 +220,7 @@ public class M2DataProcess implements IDataProcess {
             dateBytes = new byte[6];
         }
         buf.readBytes(dateBytes);
-        dateTime = Common.bytesToDate(dateBytes);
+        dateTime = CommonUtil.bytesToDate(dateBytes);
 
         return new Position(lng, lat, speed, direction, height, status, dateTime);
     }
@@ -226,13 +231,13 @@ public class M2DataProcess implements IDataProcess {
         private int speed;
         private int direction;
         private int height;
-        private byte[] status;
+        private long status;
         private Date dateTime;
 
         public Position() {
         }
 
-        public Position(long lng, long lat, int speed, int direction, int height, byte[] status, Date dateTime) {
+        public Position(long lng, long lat, int speed, int direction, int height, long status, Date dateTime) {
             this.lng = lng;
             this.lat = lat;
             this.speed = speed;
@@ -282,11 +287,11 @@ public class M2DataProcess implements IDataProcess {
             this.height = height;
         }
 
-        public byte[] getStatus() {
+        public long getStatus() {
             return status;
         }
 
-        public void setStatus(byte[] status) {
+        public void setStatus(long status) {
             this.status = status;
         }
 
@@ -297,5 +302,182 @@ public class M2DataProcess implements IDataProcess {
         public void setDateTime(Date dateTime) {
             this.dateTime = dateTime;
         }
+    }
+
+    protected class Status {
+
+        private int location;
+        private int lat;
+        private int lng;
+        private int acc;
+        private int lock;
+
+        private int discontinue;
+        private int blackout;
+        private int lowPower;
+        private int changeSIM;
+        private int gpsFault;
+        private int loseAerial;
+        private int aerialCircuit;
+        private int powerDefence;
+        private int overSpeed;
+        private int trailer;
+        private int uncap;
+
+        public int getLocation() {
+            return location;
+        }
+
+        public void setLocation(int location) {
+            this.location = location;
+        }
+
+        public int getLat() {
+            return lat;
+        }
+
+        public void setLat(int lat) {
+            this.lat = lat;
+        }
+
+        public int getLng() {
+            return lng;
+        }
+
+        public void setLng(int lng) {
+            this.lng = lng;
+        }
+
+        public int getAcc() {
+            return acc;
+        }
+
+        public void setAcc(int acc) {
+            this.acc = acc;
+        }
+
+        public int getLock() {
+            return lock;
+        }
+
+        public void setLock(int lock) {
+            this.lock = lock;
+        }
+
+        public int getDiscontinue() {
+            return discontinue;
+        }
+
+        public void setDiscontinue(int discontinue) {
+            this.discontinue = discontinue;
+        }
+
+        public int getBlackout() {
+            return blackout;
+        }
+
+        public void setBlackout(int blackout) {
+            this.blackout = blackout;
+        }
+
+        public int getLowPower() {
+            return lowPower;
+        }
+
+        public void setLowPower(int lowPower) {
+            this.lowPower = lowPower;
+        }
+
+        public int getChangeSIM() {
+            return changeSIM;
+        }
+
+        public void setChangeSIM(int changeSIM) {
+            this.changeSIM = changeSIM;
+        }
+
+        public int getGpsFault() {
+            return gpsFault;
+        }
+
+        public void setGpsFault(int gpsFault) {
+            this.gpsFault = gpsFault;
+        }
+
+        public int getLoseAerial() {
+            return loseAerial;
+        }
+
+        public void setLoseAerial(int loseAerial) {
+            this.loseAerial = loseAerial;
+        }
+
+        public int getAerialCircuit() {
+            return aerialCircuit;
+        }
+
+        public void setAerialCircuit(int aerialCircuit) {
+            this.aerialCircuit = aerialCircuit;
+        }
+
+        public int getPowerDefence() {
+            return powerDefence;
+        }
+
+        public void setPowerDefence(int powerDefence) {
+            this.powerDefence = powerDefence;
+        }
+
+        public int getOverSpeed() {
+            return overSpeed;
+        }
+
+        public void setOverSpeed(int overSpeed) {
+            this.overSpeed = overSpeed;
+        }
+
+        public int getTrailer() {
+            return trailer;
+        }
+
+        public void setTrailer(int trailer) {
+            this.trailer = trailer;
+        }
+
+        public int getUncap() {
+            return uncap;
+        }
+
+        public void setUncap(int uncap) {
+            this.uncap = uncap;
+        }
+    }
+
+    protected int statusBit(long l, int offset) {
+
+        return new Long((l >> offset) & 0x01).intValue();
+    }
+
+    protected Status renderStatu(long l) {
+        Status status = new Status();
+
+        status.setLocation(statusBit(l, 0));
+        status.setLat(statusBit(l, 1));
+        status.setLng(statusBit(l, 2));
+        status.setAcc(statusBit(l, 3));
+        status.setLock(statusBit(l, 4));
+        status.setDiscontinue(statusBit(l, 8));
+        status.setBlackout(statusBit(l, 9));
+        status.setLowPower(statusBit(l, 10));
+        status.setChangeSIM(statusBit(l, 11));
+        status.setGpsFault(statusBit(l, 12));
+        status.setLoseAerial(statusBit(l, 13));
+        status.setAerialCircuit(statusBit(l, 14));
+        status.setPowerDefence(statusBit(l, 15));
+        status.setOverSpeed(statusBit(l, 16));
+        status.setTrailer(statusBit(l, 17));
+        status.setUncap(statusBit(l, 18));
+
+        return status;
     }
 }

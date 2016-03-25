@@ -1,20 +1,23 @@
 package com.tiza.util;
 
+import com.tiza.util.client.impl.DBPClient;
+import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Description: Common
+ * Description: CommonUtil
  * Author: DIYILIU
  * Update: 2015-09-17 9:15
  */
-public class Common {
+public class CommonUtil {
 
 
     public static boolean isEmpty(String str) {
@@ -113,11 +116,11 @@ public class Common {
     }
 
 
-    public static byte[] longToBytes(long number) {
+    public static byte[] longToBytes(long number, int length) {
 
         long temp = number;
 
-        byte[] bytes = new byte[5];
+        byte[] bytes = new byte[length];
 
         for (int i = bytes.length - 1; i > -1; i--) {
 
@@ -128,6 +131,15 @@ public class Common {
         }
 
         return bytes;
+    }
+
+    public static String bytesToStr(byte[] bytes) {
+        StringBuffer buf = new StringBuffer();
+        for (byte a : bytes) {
+            buf.append(String.format("%02X", getNoSin(a)));
+        }
+
+        return buf.substring(0, buf.length() - 1);
     }
 
     public static String bytesToString(byte[] bytes) {
@@ -200,7 +212,6 @@ public class Common {
     public static String parseSIM(byte[] bytes) {
 
         Long sim = 0l;
-
         int len = bytes.length;
         for (int i = 0; i < len; i++) {
             sim += (long) (bytes[i] & 0xff) << ((len - i - 1) * 8);
@@ -239,6 +250,36 @@ public class Common {
         }
 
         return 0 - (int) bytesToLong(bytes);
+    }
+
+    public static void dealToDb(String user, String table, Map values) {
+
+        CreateSqlUtil sqlUtil = new CreateSqlUtil();
+        sqlUtil.setSqlType(1);
+        sqlUtil.setTable(table);
+        sqlUtil.setUser(user);
+        sqlUtil.setValues(values);
+        sqlUtil.createSql();
+
+        DBPClient.sendSQL(sqlUtil.getSql());
+    }
+
+    public static void dealToDb(String user, String table, Map values, Map whereCase) {
+
+        CreateSqlUtil sqlUtil = new CreateSqlUtil();
+        sqlUtil.setSqlType(1);
+        sqlUtil.setTable(table);
+        sqlUtil.setUser(user);
+        sqlUtil.setValues(values);
+        sqlUtil.setWhereCase(whereCase);
+        sqlUtil.createSql();
+
+        DBPClient.sendSQL(sqlUtil.getSql());
+    }
+
+    public static void dealToDb(String sql) {
+
+        DBPClient.sendSQL(sql);
     }
 
 

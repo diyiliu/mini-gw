@@ -25,7 +25,7 @@ public class KeepAliveOnlineTask implements ITask {
     /** 消息间隔 **/
     private final static int MSG_INTERVAL = 90;
     /** 消息延时 **/
-    private final static int MSG_DELAY = 2;
+    private final static int MSG_DELAY = 5;
 
     @Resource
     private ICache onlineCacheProvider;

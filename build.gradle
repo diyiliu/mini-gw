@@ -22,6 +22,8 @@ ext {
     springVersion = '4.2.5.RELEASE'
     nettyVersion = '4.0.34.Final'
     quartzVersion = '2.2.2'
+    druidVersion = '1.0.18'
+    mysqlVersion = '5.1.38'
     jacksonVersion = '2.7.3'
     commonsCliVersion = '1.3.1'
     logbackVersion = '1.1.6'
@@ -40,6 +42,10 @@ dependencies {
             "io.netty:netty-all:$nettyVersion",
             //quartz
             "org.quartz-scheduler:quartz:$quartzVersion",
+            //druid
+            "com.alibaba:druid:$druidVersion",
+            //mysql-connect
+            "mysql:mysql-connector-java:$mysqlVersion",
             //jackson
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             //commons-cli

@@ -3,15 +3,13 @@ package com.tiza.protocol.m2.cmd;
 import com.tiza.protocol.m2.M2DataProcess;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
-import com.tiza.util.Common;
+import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Description: CMD_82
@@ -37,10 +35,10 @@ public class CMD_82 extends M2DataProcess {
         int serial = buf.readUnsignedShort();
         int cmd = buf.readByte();
         int result = buf.readByte();
-        //logger.info("解析命令[{}]，序号[{}], 下行命令[{}], 结果[{}], 车辆[{}]", Common.toHex(m2Header.getCmd()), serial, Common.toHex(cmd), result, m2Header.getTerminalId());
+        //logger.info("解析命令[{}]，序号[{}], 下行命令[{}], 结果[{}], 车辆[{}]", CommonUtil.toHex(m2Header.getCmd()), serial, CommonUtil.toHex(cmd), result, m2Header.getTerminalId());
 
         if (waitACKCacheProvider.containsKey(serial)){
-            logger.info("收到应答，序号[{}], 命令[{}], 结果[{}], 车辆[{}]", serial, Common.toHex(cmd), result, m2Header.getTerminalId());
+            logger.info("收到应答，序号[{}], 命令[{}], 结果[{}], 车辆[{}]", serial, CommonUtil.toHex(cmd), result, m2Header.getTerminalId());
             waitACKCacheProvider.remove(serial);
         }
     }

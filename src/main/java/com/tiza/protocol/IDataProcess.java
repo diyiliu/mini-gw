@@ -9,9 +9,9 @@ import com.tiza.protocol.model.header.Header;
  */
 public interface IDataProcess {
 
-    public Header dealHeader(byte[] bytes);
+    Header dealHeader(byte[] bytes);
 
-    public void parse(byte[] content, Header header);
+    void parse(byte[] content, Header header);
 
-    public byte[] pack(String id, Header header);
+    byte[] pack(String id, Header header);
 }

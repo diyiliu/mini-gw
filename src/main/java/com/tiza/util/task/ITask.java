@@ -7,5 +7,5 @@ package com.tiza.util.task;
  */
 public interface ITask {
 
-    public void execute();
+    void execute();
 }

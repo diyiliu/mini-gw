@@ -1,6 +1,5 @@
 package com.tiza.util.client.handler;
 
-import com.tiza.util.Common;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;

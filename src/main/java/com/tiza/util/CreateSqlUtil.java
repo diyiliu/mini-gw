@@ -113,7 +113,7 @@ public class CreateSqlUtil {
 
     private void addInsertHead() {
         this.sql.append("insert into ");
-        if (!Common.isEmpty(this.user)) {
+        if (!CommonUtil.isEmpty(this.user)) {
             this.sql.append(this.user).append(".");
         }
         this.sql.append(this.table);
@@ -121,7 +121,7 @@ public class CreateSqlUtil {
 
     private void addUpdateHead() {
         this.sql.append("update ");
-        if (!Common.isEmpty(this.user)) {
+        if (!CommonUtil.isEmpty(this.user)) {
             this.sql.append(this.user).append(".");
         }
         this.sql.append(this.table).append(" set ");
@@ -225,7 +225,7 @@ public class CreateSqlUtil {
         } else if (value instanceof Number) {
             sb.append(value);
         } else if (value instanceof Date) {
-            sb.append("to_date('").append(DateUtil.dateToString((Date) value)).append("' , 'yyyy-mm-dd hh24:mi:ss')");
+            sb.append("date_format('").append(DateUtil.dateToString((Date) value)).append("' , '%Y-%m-%d %H:%i:%s')");
         } else if (value == null) {
             sb.append(value);
         }
