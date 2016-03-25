@@ -33,7 +33,7 @@ public class KeepAliveOnlineTask implements ITask {
     @Override
     public void execute() {
         Date now = new Date();
-        logger.info("检测在线...");
+        //logger.info("检测在线...");
 
         Set<Object> keys = onlineCacheProvider.getKeys();
 

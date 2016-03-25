@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <sql id="selectVehicle" description="查询车辆信息" fieldType="">
+        <![CDATA[
+            SELECT
+              c.`Id`,
+              c.`TerminalId`,
+              c.`NAME`,
+              c.`License`,
+              c.`CreateTime`
+            FROM
+              vehicle c
+        ]]>
+    </sql>
+</root>

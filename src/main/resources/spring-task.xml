@@ -17,8 +17,8 @@
     </bean>
     <bean id="msgSenderTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="msgSenderJobDetail"/>
-        <property name="startDelay" value="1"/>
-        <property name="repeatInterval" value="1000"/>
+        <property name="startDelay" value="1000"/>
+        <property name="repeatInterval" value="3000"/>
     </bean>
 
     <!-- 命令应答 -->
@@ -34,8 +34,8 @@
     </bean>
     <bean id="waitACKTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="waitACKJobDetail"/>
-        <property name="startDelay" value="1"/>
-        <property name="repeatInterval" value="2000"/>
+        <property name="startDelay" value="1000"/>
+        <property name="repeatInterval" value="3000"/>
     </bean>
 
     <!-- 保持在线 -->
@@ -91,6 +91,24 @@
         <property name="cronExpression" value="0 0 1 15 * ?"/>
     </bean>
 
+    <!-- 车辆缓存 （间隔：5分钟）-->
+    <bean id="refreshVehicleTask" class="com.tiza.util.task.impl.RefreshVehicleTask"/>
+    <bean id="refreshVehicleJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="refreshVehicleTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="refreshVehicleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="refreshVehicleJobDetail"/>
+        <property name="startDelay" value="5000"/>
+        <property name="repeatInterval" value="300000"/>
+    </bean>
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -98,6 +116,7 @@
                 <ref bean="waitACKTrigger"/>
                 <ref bean="keepAliveOnlineTrigger"/>
                 <ref bean="heartbeatSenderTrigger"/>
+                <ref bean="refreshVehicleTrigger"/>
                 <ref bean="createMonthTableTrigger"/>
             </list>
         </property>

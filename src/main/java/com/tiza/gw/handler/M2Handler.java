@@ -5,8 +5,10 @@ import com.tiza.protocol.model.header.M2Header;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
 import com.tiza.protocol.model.pipeline.MSGUDPPipeline;
 import com.tiza.util.CommonUtil;
+import com.tiza.util.JacksonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
+import com.tiza.util.entity.VehicleInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -35,6 +37,9 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
     @Resource
     private ICache onlineCacheProvider;
+
+    @Resource
+    private ICache vehicleCacheProvider;
 
     @Resource
     private M2DataProcess m2DataProcess;
@@ -70,7 +75,12 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
             logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
             return;
         }
-        process.parse(m2Header.getContent(), m2Header);
+
+        if (vehicleCacheProvider.containsKey(m2Header.getTerminalId())){
+            process.parse(m2Header.getContent(), m2Header);
+        }else {
+            logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
+        }
     }
 
     @Override
@@ -90,6 +100,6 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
             this.put("RawData", CommonUtil.bytesToStr(content));
         }};
 
-        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, Constant.DBInfo.DB_CLOUD_RAWDATA, map);
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_RAWDATA, new Date()), map);
     }
 }

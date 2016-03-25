@@ -1,22 +1,32 @@
 package com.tiza.util.config;
 
 import com.tiza.util.entity.TableSchema;
+import org.springframework.core.io.ClassPathResource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: Constant
  * Author: DIYILIU
  * Update: 2016-03-24 15:58
  */
-public class Constant {
+public final class Constant {
 
     public enum DBInfo {
         ;
         public final static String DB_CLOUD_USER = "cloudgps";
         public final static String DB_CLOUD_RAWDATA = "gpsrawdata";
-
 
         public final static List<TableSchema> DB_CLOUD_MONTH_TABLES = new ArrayList() {{
 
@@ -58,4 +68,50 @@ public class Constant {
                     "`VehicleId`,`GpsTime`,`Id`"));
         }};
     }
+
+    public void init(){
+        initSqlCache();
+
+    }
+
+    private final static String SQL_FILE = "sql.xml";
+
+    private static Map<String, String> sqlCache = new HashMap<>();
+
+    public static String getSQL(String sqlId){
+        return sqlCache.get(sqlId);
+    }
+
+    public void initSqlCache(){
+        sqlCache.clear();
+        InputStream is = null;
+        try {
+             is = new ClassPathResource(SQL_FILE).getInputStream();
+            DocumentBuilder domBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = domBuilder.parse(is);
+            Element root = doc.getDocumentElement();
+
+            NodeList sqlList = root.getElementsByTagName("sql");
+            if (sqlList != null){
+                for(int i = 0; i < sqlList.getLength(); i++){
+                    Node node = sqlList.item(i);
+                    String id = node.getAttributes().getNamedItem("id").getNodeValue();
+                    //String description = node.getAttributes().getNamedItem("description").getNodeValue();
+                    String content = node.getTextContent().trim();
+                    sqlCache.put(id, content);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

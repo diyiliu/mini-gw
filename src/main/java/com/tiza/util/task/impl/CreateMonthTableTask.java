@@ -30,7 +30,7 @@ public class CreateMonthTableTask implements ITask {
 
     @Override
     public void execute() {
-        logger.info("创建月表...");
+        //logger.info("创建月表...");
         List<TableSchema> schemaList = Constant.DBInfo.DB_CLOUD_MONTH_TABLES;
 
         Calendar calendar = Calendar.getInstance();

@@ -282,6 +282,10 @@ public class CommonUtil {
         DBPClient.sendSQL(sql);
     }
 
+    public static String monthTable(String table, Date date){
+
+        return table + DateUtil.dateToString(date, "%1$tY%1$tm");
+    }
 
     public static void main(String[] args) {
 

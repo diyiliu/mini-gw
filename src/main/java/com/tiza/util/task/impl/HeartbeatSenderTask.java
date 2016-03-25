@@ -30,7 +30,7 @@ public class HeartbeatSenderTask implements ITask {
 
     @Override
     public void execute() {
-        logger.info("发送心跳...");
+        //logger.info("发送心跳...");
 
         Set<Object> keys = onlineCacheProvider.getKeys();
 
