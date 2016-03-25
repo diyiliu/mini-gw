@@ -267,7 +267,7 @@ public class CommonUtil {
     public static void dealToDb(String user, String table, Map values, Map whereCase) {
 
         CreateSqlUtil sqlUtil = new CreateSqlUtil();
-        sqlUtil.setSqlType(1);
+        sqlUtil.setSqlType(2);
         sqlUtil.setTable(table);
         sqlUtil.setUser(user);
         sqlUtil.setValues(values);

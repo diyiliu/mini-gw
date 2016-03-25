@@ -7,6 +7,8 @@ import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
+import com.tiza.util.config.Constant;
+import com.tiza.util.entity.VehicleInfo;
 import com.tiza.util.task.impl.MSGSenderTask;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -15,9 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -36,6 +36,9 @@ public class M2DataProcess implements IDataProcess {
 
     @Resource
     protected ICache waitACKCacheProvider;
+
+    @Resource
+    protected ICache vehicleCacheProvider;
 
     protected int cmdId = 0xFF;
 
@@ -313,11 +316,11 @@ public class M2DataProcess implements IDataProcess {
         private int lock;
 
         private int discontinue;
-        private int blackout;
+        private int powerOff;
         private int lowPower;
         private int changeSIM;
         private int gpsFault;
-        private int loseAerial;
+        private int loseAntenna;
         private int aerialCircuit;
         private int powerDefence;
         private int overSpeed;
@@ -372,12 +375,12 @@ public class M2DataProcess implements IDataProcess {
             this.discontinue = discontinue;
         }
 
-        public int getBlackout() {
-            return blackout;
+        public int getPowerOff() {
+            return powerOff;
         }
 
-        public void setBlackout(int blackout) {
-            this.blackout = blackout;
+        public void setPowerOff(int powerOff) {
+            this.powerOff = powerOff;
         }
 
         public int getLowPower() {
@@ -404,12 +407,12 @@ public class M2DataProcess implements IDataProcess {
             this.gpsFault = gpsFault;
         }
 
-        public int getLoseAerial() {
-            return loseAerial;
+        public int getLoseAntenna() {
+            return loseAntenna;
         }
 
-        public void setLoseAerial(int loseAerial) {
-            this.loseAerial = loseAerial;
+        public void setLoseAntenna(int loseAntenna) {
+            this.loseAntenna = loseAntenna;
         }
 
         public int getAerialCircuit() {
@@ -467,11 +470,11 @@ public class M2DataProcess implements IDataProcess {
         status.setAcc(statusBit(l, 3));
         status.setLock(statusBit(l, 4));
         status.setDiscontinue(statusBit(l, 8));
-        status.setBlackout(statusBit(l, 9));
+        status.setPowerOff(statusBit(l, 9));
         status.setLowPower(statusBit(l, 10));
         status.setChangeSIM(statusBit(l, 11));
         status.setGpsFault(statusBit(l, 12));
-        status.setLoseAerial(statusBit(l, 13));
+        status.setLoseAntenna(statusBit(l, 13));
         status.setAerialCircuit(statusBit(l, 14));
         status.setPowerDefence(statusBit(l, 15));
         status.setOverSpeed(statusBit(l, 16));
@@ -480,4 +483,53 @@ public class M2DataProcess implements IDataProcess {
 
         return status;
     }
+
+    protected void toDB(String terminalId, Position position, Status status) {
+
+        if (!vehicleCacheProvider.containsKey(terminalId)) {
+            return;
+        }
+
+        VehicleInfo vehicle = (VehicleInfo) vehicleCacheProvider.get(terminalId);
+        Date now = new Date();
+
+        Map valueMap = new HashMap() {
+            {
+                this.put("Lat", position.getLat());
+                this.put("Lng", position.getLng());
+                //this.put("EncryptLat", );
+                //this.put("EncryptLng", );
+                this.put("Speed", position.getSpeed());
+                this.put("Direction", position.getDirection());
+                this.put("GpsTime", position.getDateTime());
+                this.put("SystemTime", now);
+                this.put("AccStatus", status.acc);
+                this.put("LocationStatus", status.location);
+                //this.put("GsmSignal", );
+                //this.put("GpsStatellite", );
+                this.put("PowerOff", status.getPowerOff());
+                this.put("LowVoltage", status.getLowPower());
+                this.put("GpsModule", status.getGpsFault());
+                this.put("GpsAntenna", status.getLoseAntenna());
+            }
+        };
+
+        Map whereMap = new HashMap() {
+            {
+                this.put("VehicleId", vehicle.getId());
+            }
+        };
+
+        // 更新当前位置表
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
+                Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
+                valueMap, whereMap);
+
+        // 插入轨迹表
+        valueMap.put("VehicleId", vehicle.getId());
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
+                CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_VEHICLETRACK, now),
+                valueMap);
+    }
+
 }

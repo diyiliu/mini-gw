@@ -27,6 +27,8 @@ public final class Constant {
         ;
         public final static String DB_CLOUD_USER = "cloudgps";
         public final static String DB_CLOUD_RAWDATA = "gpsrawdata";
+        public final static String DB_CLOUD_VEHICLEGPSINFO = "vehiclegpsinfo";
+        public final static String DB_CLOUD_VEHICLETRACK = "vehicletrack";
 
         public final static List<TableSchema> DB_CLOUD_MONTH_TABLES = new ArrayList() {{
 

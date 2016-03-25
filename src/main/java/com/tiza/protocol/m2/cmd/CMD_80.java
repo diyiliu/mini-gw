@@ -23,6 +23,9 @@ public class CMD_80 extends M2DataProcess {
         M2Header m2Header = (M2Header) header;
 
         Position position = renderPosition(content);
+        Status status = renderStatu(position.getStatus());
+
+        toDB(m2Header.getTerminalId(), position, status);
 
         send(0x01, m2Header);
     }
