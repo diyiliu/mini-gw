@@ -27,6 +27,6 @@ public class CMD_83 extends M2DataProcess{
 
         Status status = renderStatu(position.getStatus());
 
-        logger.info("终端[{}], 状态位[{}]", m2Header.getTerminalId(), JacksonUtil.toJson(status));
+        toDB(m2Header.getTerminalId(), position, status);
     }
 }

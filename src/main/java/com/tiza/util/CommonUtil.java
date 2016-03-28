@@ -5,6 +5,8 @@ import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -164,6 +166,14 @@ public class CommonUtil {
         }
     }
 
+    public static double keepDecimal(double d, int digit) {
+
+        BigDecimal decimal = new BigDecimal(d);
+        decimal = decimal.setScale(digit, RoundingMode.HALF_UP);
+
+        return decimal.doubleValue();
+    }
+
     public static String parseBytes(byte[] array, int offset, int lenght) {
 
         ByteBuf buf = Unpooled.copiedBuffer(array, offset, lenght);
@@ -282,7 +292,7 @@ public class CommonUtil {
         DBPClient.sendSQL(sql);
     }
 
-    public static String monthTable(String table, Date date){
+    public static String monthTable(String table, Date date) {
 
         return table + DateUtil.dateToString(date, "%1$tY%1$tm");
     }
@@ -302,6 +312,8 @@ public class CommonUtil {
          System.out.println(sim);
          */
 
-        System.out.println(renderHeight(null));
+        System.out.println(keepDecimal(12, 3));
     }
+
+
 }

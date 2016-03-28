@@ -4,12 +4,14 @@
         <![CDATA[
             SELECT
               c.`Id`,
-              c.`TerminalId`,
+              t.`DeviceId`,
               c.`NAME`,
               c.`License`,
               c.`CreateTime`
             FROM
               vehicle c
+              INNER JOIN terminal t
+                ON t.`Id` = c.`TerminalId`
         ]]>
     </sql>
 </root>

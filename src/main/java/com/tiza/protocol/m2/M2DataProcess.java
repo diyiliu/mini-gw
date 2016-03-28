@@ -231,6 +231,9 @@ public class M2DataProcess implements IDataProcess {
     protected class Position {
         private long lng;
         private long lat;
+        private double lngD;
+        private double latD;
+
         private int speed;
         private int direction;
         private int height;
@@ -264,6 +267,28 @@ public class M2DataProcess implements IDataProcess {
 
         public void setLat(long lat) {
             this.lat = lat;
+        }
+
+        public double getLngD() {
+            double d = this.lng / 1000000.0;
+            lngD = CommonUtil.keepDecimal(d, 2);
+
+            return lngD;
+        }
+
+        public void setLngD(double lngD) {
+            this.lngD = lngD;
+        }
+
+        public double getLatD() {
+            double d = this.lat / 1000000.0;
+            latD = CommonUtil.keepDecimal(d, 2);
+
+            return latD;
+        }
+
+        public void setLatD(double latD) {
+            this.latD = latD;
         }
 
         public int getSpeed() {
@@ -484,6 +509,71 @@ public class M2DataProcess implements IDataProcess {
         return status;
     }
 
+    protected class Parameter {
+
+        private Long accTime;
+        private Double accHour;
+        private Integer gsmSignal;
+        private Double voltage;
+        private Integer satellite;
+
+        public Parameter() {
+
+        }
+
+        public Parameter(Long accTime, Integer gsmSignal, Double voltage, Integer satellite) {
+            this.accTime = accTime;
+            this.gsmSignal = gsmSignal;
+            this.voltage = voltage;
+            this.satellite = satellite;
+        }
+
+        public Long getAccTime() {
+            return accTime;
+        }
+
+        public void setAccTime(Long accTime) {
+            this.accTime = accTime;
+        }
+
+        public Double getAccHour() {
+            if (accTime != null) {
+                double d = accTime / 3600.0;
+                accHour = CommonUtil.keepDecimal(d, 2);
+            }
+            return accHour;
+        }
+
+        public void setAccHour(Double accHour) {
+            this.accHour = accHour;
+        }
+
+        public Integer getGsmSignal() {
+            return gsmSignal;
+        }
+
+        public void setGsmSignal(Integer gsmSignal) {
+            this.gsmSignal = gsmSignal;
+        }
+
+        public Double getVoltage() {
+            return voltage;
+        }
+
+        public void setVoltage(Double voltage) {
+            this.voltage = voltage;
+        }
+
+        public Integer getSatellite() {
+            return satellite;
+        }
+
+        public void setSatellite(Integer satellite) {
+            this.satellite = satellite;
+        }
+    }
+
+
     protected void toDB(String terminalId, Position position, Status status) {
 
         if (!vehicleCacheProvider.containsKey(terminalId)) {
@@ -495,8 +585,8 @@ public class M2DataProcess implements IDataProcess {
 
         Map valueMap = new HashMap() {
             {
-                this.put("Lat", position.getLat());
-                this.put("Lng", position.getLng());
+                this.put("Lat", position.getLatD());
+                this.put("Lng", position.getLngD());
                 //this.put("EncryptLat", );
                 //this.put("EncryptLng", );
                 this.put("Speed", position.getSpeed());
@@ -505,8 +595,6 @@ public class M2DataProcess implements IDataProcess {
                 this.put("SystemTime", now);
                 this.put("AccStatus", status.acc);
                 this.put("LocationStatus", status.location);
-                //this.put("GsmSignal", );
-                //this.put("GpsStatellite", );
                 this.put("PowerOff", status.getPowerOff());
                 this.put("LowVoltage", status.getLowPower());
                 this.put("GpsModule", status.getGpsFault());
@@ -519,17 +607,76 @@ public class M2DataProcess implements IDataProcess {
                 this.put("VehicleId", vehicle.getId());
             }
         };
+        // 插入轨迹表
+        valueMap.put("VehicleId", vehicle.getId());
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
+                CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_VEHICLETRACK, now),
+                valueMap);
 
         // 更新当前位置表
         CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
                 Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
                 valueMap, whereMap);
+    }
+
+    protected void toDB(String terminalId, Position position, Status status, Parameter parameter) {
+
+        if (!vehicleCacheProvider.containsKey(terminalId)) {
+            return;
+        }
+
+        VehicleInfo vehicle = (VehicleInfo) vehicleCacheProvider.get(terminalId);
+        Date now = new Date();
+
+        Map valueMap = new HashMap() {
+            {
+                this.put("Lat", position.getLatD());
+                this.put("Lng", position.getLngD());
+                //this.put("EncryptLat", );
+                //this.put("EncryptLng", );
+                this.put("Speed", position.getSpeed());
+                this.put("Direction", position.getDirection());
+                this.put("GpsTime", position.getDateTime());
+                this.put("SystemTime", now);
+                this.put("AccStatus", status.acc);
+                this.put("LocationStatus", status.location);
+                this.put("PowerOff", status.getPowerOff());
+                this.put("LowVoltage", status.getLowPower());
+                this.put("GpsModule", status.getGpsFault());
+                this.put("GpsAntenna", status.getLoseAntenna());
+
+                if (parameter.getGsmSignal() != null) {
+                    this.put("GsmSignal", parameter.getGsmSignal());
+                }
+                if (parameter.getSatellite() != null) {
+
+                    this.put("GpsSatellite", parameter.getSatellite());
+                }
+                if (parameter.getAccHour() != null) {
+
+                    this.put("AccOnHours", parameter.getAccHour());
+                }
+
+            }
+        };
+
+        Map whereMap = new HashMap() {
+            {
+                this.put("VehicleId", vehicle.getId());
+            }
+        };
 
         // 插入轨迹表
         valueMap.put("VehicleId", vehicle.getId());
         CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
                 CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_VEHICLETRACK, now),
                 valueMap);
+
+        valueMap.put("WorkDataTime", position.getDateTime());
+        // 更新当前位置表
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
+                Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
+                valueMap, whereMap);
     }
 
 }

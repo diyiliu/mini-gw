@@ -24,7 +24,7 @@ public class VehicleDao extends BaseDao {
         return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
             VehicleInfo vehicleInfo = new VehicleInfo();
             vehicleInfo.setId(rs.getInt("Id"));
-            vehicleInfo.setTerminalId(rs.getString("TerminalId"));
+            vehicleInfo.setTerminalId(rs.getString("DeviceId"));
             vehicleInfo.setName(rs.getString("NAME"));
             vehicleInfo.setLicense(rs.getString("License"));
             vehicleInfo.setCreateTimeStr(rs.getString("CreateTime"));
