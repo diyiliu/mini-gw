@@ -47,8 +47,8 @@ public class CMD_87 extends M2DataProcess {
             param.setAccTime(accTime);
         }
         if (parameters.containsKey(0x02)) {
-            int gsmsignal = CommonUtil.getNoSin(parameters.get(0x02)[0]);
-            param.setGsmSignal(gsmsignal);
+            int gsmSignal = CommonUtil.getNoSin(parameters.get(0x02)[0]);
+            param.setGsmSignal(gsmSignal);
         }
         if (parameters.containsKey(0x03)) {
             double voltage = CommonUtil.bytesToLong(parameters.get(0x03));
