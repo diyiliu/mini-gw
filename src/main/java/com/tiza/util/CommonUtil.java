@@ -312,7 +312,10 @@ public class CommonUtil {
          System.out.println(sim);
          */
 
-        System.out.println(keepDecimal(12, 3));
+       // System.out.println(keepDecimal(12, 3));
+
+        byte[] bytes = longToBytes(6553, 2);
+        System.out.println(bytesToLong(bytes));
     }
 
 

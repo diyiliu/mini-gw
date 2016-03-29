@@ -34,11 +34,15 @@ public class CMDInitializer implements ApplicationListener {
 
             for (Iterator iter = parses.keySet().iterator(); iter.hasNext(); ) {
                 String key = (String) iter.next();
-                M2DataProcess m2Process = (M2DataProcess) parses.get(key);
+                Object process = parses.get(key);
 
-                if (0xFF != m2Process.getCmdId()) {
-                    ICache cmdCache = m2Process.getM2CMDCacheProvider();
-                    cmdCache.put(m2Process.getCmdId(), m2Process);
+                if (process instanceof M2DataProcess) {
+                    M2DataProcess m2Process = (M2DataProcess) process;
+
+                    if (0xFF != m2Process.getCmdId()) {
+                        ICache cmdCache = m2Process.getM2CMDCacheProvider();
+                        cmdCache.put(m2Process.getCmdId(), m2Process);
+                    }
                 }
             }
         }

@@ -52,8 +52,6 @@
 
     <bean class="com.tiza.util.SpringUtil"/>
 
-    <bean class="com.tiza.util.client.impl.MonitorClient" init-method="init"/>
-
     <bean class="com.tiza.util.listener.CMDInitializer">
         <property name="protocols">
             <list>
@@ -61,4 +59,10 @@
             </list>
         </property>
     </bean>
+
+    <bean class="com.tiza.util.ws.impl.M2Sender" init-method="init">
+        <property name="address" value="http://192.168.1.19:8989/cloud/m2sender"/>
+    </bean>
+
+    <bean class="com.tiza.util.client.impl.MonitorClient" init-method="init"/>
 </beans>

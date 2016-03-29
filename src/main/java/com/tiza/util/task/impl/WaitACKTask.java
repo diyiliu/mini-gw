@@ -44,6 +44,7 @@ public class WaitACKTask implements ITask {
                     waitACKCacheProvider.remove(serial);
                     continue;
                 }
+
                 long count = repeatMSG.getCount();
                 logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", repeatMSG.getTerminal(), CommonUtil.toHex(repeatMSG.getCmd()), serial, count);
                 repeatMSG.setSendTime(now);

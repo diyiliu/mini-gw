@@ -151,7 +151,7 @@ public class M2DataProcess implements IDataProcess {
     }
 
     @Override
-    public byte[] pack(String id, Header header) {
+    public byte[] pack(String id, Header header, Object... argus) {
         return new byte[0];
     }
 
@@ -171,30 +171,33 @@ public class M2DataProcess implements IDataProcess {
         return serial.intValue();
     }
 
-    protected final static List<Integer> ACK_CMDS = new ArrayList<Integer>() {{
-        this.add(0x01);
-        this.add(0x03);
-        this.add(0x04);
-        this.add(0x05);
-        this.add(0x06);
-        this.add(0x09);
-        this.add(0x0A);
-    }};
+    protected final static List<Integer> ACK_CMDS = new ArrayList<Integer>() {
+        {
+            this.add(0x01);
+            this.add(0x03);
+            this.add(0x04);
+            this.add(0x05);
+            this.add(0x06);
+            this.add(0x09);
+            this.add(0x0A);
+        }
+    };
 
     protected void put(String terminalId, int cmd, byte[] content) {
 
         MSGSenderTask.send(new SendMSG(terminalId, cmd, content));
     }
 
-    protected void send(int respCmd, M2Header m2Header) {
-        M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(respCmd);
-        byte[] respContent = process.pack(m2Header.getTerminalId(), m2Header);
+    public void send(int cmd, M2Header m2Header, Object... argus) {
+        M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
+        byte[] content = process.pack(m2Header.getTerminalId(), m2Header, argus);
 
-        put(m2Header.getTerminalId(), respCmd, respContent);
-
-        if (ACK_CMDS.contains(respCmd)) {
-            waitACKCacheProvider.put(m2Header.getSerial(), new RepeatMSG(m2Header.getSerial(), new Date(), m2Header.getTerminalId(), respCmd, respContent));
+        if (ACK_CMDS.contains(cmd)) {
+            waitACKCacheProvider.put(m2Header.getSerial(), new RepeatMSG(m2Header.getSerial(), new Date(),
+                    m2Header.getTerminalId(), cmd, content));
         }
+
+        put(m2Header.getTerminalId(), cmd, content);
     }
 
     protected Position renderPosition(byte[] bytes) {
@@ -215,7 +218,7 @@ public class M2DataProcess implements IDataProcess {
         buf.readBytes(statusBytes);
         long status = CommonUtil.bytesToLong(statusBytes);
 
-        Date dateTime = null;
+        Date dateTime;
         byte[] dateBytes = null;
         if (bytes.length == 19) {
             dateBytes = new byte[3];
@@ -229,15 +232,15 @@ public class M2DataProcess implements IDataProcess {
     }
 
     protected class Position {
-        private long lng;
-        private long lat;
-        private double lngD;
-        private double latD;
+        private Long lng;
+        private Long lat;
+        private Double lngD;
+        private Double latD;
 
-        private int speed;
-        private int direction;
-        private int height;
-        private long status;
+        private Integer speed;
+        private Integer direction;
+        private Integer height;
+        private Long status;
         private Date dateTime;
 
         public Position() {
@@ -253,73 +256,71 @@ public class M2DataProcess implements IDataProcess {
             this.dateTime = dateTime;
         }
 
-        public long getLng() {
+        public Long getLng() {
             return lng;
         }
 
-        public void setLng(long lng) {
+        public void setLng(Long lng) {
             this.lng = lng;
         }
 
-        public long getLat() {
+        public Long getLat() {
             return lat;
         }
 
-        public void setLat(long lat) {
+        public void setLat(Long lat) {
             this.lat = lat;
         }
 
-        public double getLngD() {
+        public Double getLngD() {
             double d = this.lng / 1000000.0;
             lngD = CommonUtil.keepDecimal(d, 2);
-
             return lngD;
         }
 
-        public void setLngD(double lngD) {
+        public void setLngD(Double lngD) {
             this.lngD = lngD;
         }
 
-        public double getLatD() {
+        public Double getLatD() {
             double d = this.lat / 1000000.0;
             latD = CommonUtil.keepDecimal(d, 2);
-
             return latD;
         }
 
-        public void setLatD(double latD) {
+        public void setLatD(Double latD) {
             this.latD = latD;
         }
 
-        public int getSpeed() {
+        public Integer getSpeed() {
             return speed;
         }
 
-        public void setSpeed(int speed) {
+        public void setSpeed(Integer speed) {
             this.speed = speed;
         }
 
-        public int getDirection() {
+        public Integer getDirection() {
             return direction;
         }
 
-        public void setDirection(int direction) {
+        public void setDirection(Integer direction) {
             this.direction = direction;
         }
 
-        public int getHeight() {
+        public Integer getHeight() {
             return height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(Integer height) {
             this.height = height;
         }
 
-        public long getStatus() {
+        public Long getStatus() {
             return status;
         }
 
-        public void setStatus(long status) {
+        public void setStatus(Long status) {
             this.status = status;
         }
 

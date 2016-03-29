@@ -21,7 +21,7 @@ public class CMD_02 extends M2DataProcess{
     }
 
     @Override
-    public byte[] pack(String id, Header header) {
+    public byte[] pack(String id, Header header, Object... argus) {
         M2Header m2Header = (M2Header) header;
 
         ByteBuf buf = Unpooled.buffer(4);

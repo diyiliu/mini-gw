@@ -6,24 +6,24 @@ import com.tiza.protocol.model.header.M2Header;
 import org.springframework.stereotype.Service;
 
 /**
- * Description: CMD_00
+ * Description: CMD_84
  * Author: DIYILIU
- * Update: 2016-03-22 10:03
+ * Update: 2016-03-29 9:26
  */
 
 @Service
-public class CMD_00 extends M2DataProcess {
+public class CMD_84 extends M2DataProcess {
 
-    public CMD_00() {
-        this.cmdId = 0x00;
+    public CMD_84() {
+        this.cmdId = 0x84;
     }
 
     @Override
-    public byte[] pack(String id, Header header, Object... argus) {
+    public void parse(byte[] content, Header header) {
         M2Header m2Header = (M2Header) header;
 
-        byte[] bytes = new byte[0];
+        // TODO: 2016/3/29
 
-        return headerToSendBytes(bytes, this.cmdId, m2Header);
+        send(0x02, m2Header);
     }
 }

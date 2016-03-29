@@ -62,7 +62,7 @@ public class MonitorClient extends Thread implements IClient{
                         System.out.println("开始监控车辆[" + terminal + "]");
                         monitorCacheProvider.put(terminal, new Date());
                     }else {
-                        System.out.println("不存在车辆[" + terminal + "]");
+                        System.out.println("该车辆离线[" + terminal + "]");
                     }
                 } else {
                     HelpFormatter formatter = new HelpFormatter();
