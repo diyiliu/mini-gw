@@ -30,7 +30,7 @@ public class MSGUDPPipeline extends MSGPipeline {
 
     @Override
     public void send(String terminal, int cmd, byte[] bytes) {
-        logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminal, CommonUtil.toHex(cmd), CommonUtil.bytesToString(bytes));
+        //logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminal, CommonUtil.toHex(cmd), CommonUtil.bytesToString(bytes));
 
         ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(bytes), sender));
     }

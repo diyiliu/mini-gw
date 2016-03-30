@@ -26,6 +26,7 @@ public final class Constant {
     public enum DBInfo {
         ;
         public final static String DB_CLOUD_USER = "cloudgps";
+        public final static String DB_CLOUD_INSTRUCTION = "gpsinstruction";
         public final static String DB_CLOUD_RAWDATA = "gpsrawdata";
         public final static String DB_CLOUD_VEHICLEGPSINFO = "vehiclegpsinfo";
         public final static String DB_CLOUD_VEHICLETRACK = "vehicletrack";

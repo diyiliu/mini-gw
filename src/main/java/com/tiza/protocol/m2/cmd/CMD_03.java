@@ -23,7 +23,8 @@ public class CMD_03 extends M2DataProcess{
     public byte[] pack(String id, Header header, Object... argus) {
         M2Header m2Header = (M2Header) header;
 
-        byte[] bytes = CommonUtil.longToBytes((Long) argus[0], 2);
+        int interval = (int) argus[0];
+        byte[] bytes = CommonUtil.longToBytes(interval, 2);
 
         return headerToSendBytes(bytes, cmdId, m2Header);
     }

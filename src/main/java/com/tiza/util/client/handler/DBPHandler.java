@@ -59,7 +59,7 @@ public class DBPHandler extends ChannelInboundHandlerAdapter{
                 buf.writeShort(3);
                 buf.writeByte(0x00);
                 //发送心跳
-                logger.info("发送心跳...");
+                //logger.info("发送心跳...");
                 ctx.writeAndFlush(buf);
             } else if (IdleState.ALL_IDLE == event.state()) {
                 //logger.warn("读/写超时...");
@@ -75,7 +75,7 @@ public class DBPHandler extends ChannelInboundHandlerAdapter{
         buf.writeByte(0x01);
         buf.writeBytes(content);
 
-        logger.info("发送DBP: [{}]", sql);
+        //logger.info("发送DBP: [{}]", sql);
         ctx.writeAndFlush(buf);
     }
 

@@ -34,7 +34,7 @@ public class M2Sender implements IM2Sender {
             MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
             M2Header m2Header = (M2Header) pipeline.getHeader();
 
-            m2DataProcess.send(0x03, m2Header, interval);
+            m2DataProcess.send(0x03, m2Header, id, interval);
         }
     }
 

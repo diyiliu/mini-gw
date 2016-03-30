@@ -44,6 +44,9 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
     @Resource
     private M2DataProcess m2DataProcess;
 
+    @Resource
+    private ICache monitorCacheProvider;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
@@ -61,8 +64,11 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         if (m2Header == null) {
             return;
         }
+        // 重点监控
+        if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
+            logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
+        }
 
-        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
         toDB(m2Header, bytes);
 
         MSGPipeline pipeline = new MSGUDPPipeline(ctx, packet.sender());
@@ -76,9 +82,9 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        if (vehicleCacheProvider.containsKey(m2Header.getTerminalId())){
+        if (vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
             process.parse(m2Header.getContent(), m2Header);
-        }else {
+        } else {
             logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
         }
     }

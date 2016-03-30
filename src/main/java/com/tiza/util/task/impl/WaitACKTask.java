@@ -1,17 +1,16 @@
 package com.tiza.util.task.impl;
 
-import com.tiza.protocol.model.RepeatMSG;
+import com.tiza.protocol.model.BackupMSG;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
+import com.tiza.util.config.Constant;
 import com.tiza.util.task.ITask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Description: WaitACKTask
@@ -35,29 +34,63 @@ public class WaitACKTask implements ITask {
         Set<Object> keys = waitACKCacheProvider.getKeys();
         for (Iterator iter = keys.iterator(); iter.hasNext(); ) {
             int serial = (Integer) iter.next();
-            RepeatMSG repeatMSG = (RepeatMSG) waitACKCacheProvider.get(serial);
+            BackupMSG backupMSG = (BackupMSG) waitACKCacheProvider.get(serial);
+            int id = backupMSG.getId();
+            int cmd = backupMSG.getCmd();
 
-            if (now.getTime() - repeatMSG.getSendTime().getTime() > 8 * 1000){
+            if (now.getTime() - backupMSG.getSendTime().getTime() > 8 * 1000) {
 
-                if (!onlineCacheProvider.containsKey(repeatMSG.getTerminal())){
+                if (!onlineCacheProvider.containsKey(backupMSG.getTerminal())) {
+
+                    if (id > 0) {
+                        toDB(id, cmd);
+                    }
+                    waitACKCacheProvider.remove(serial);
+                    continue;
+                }
+
+                long count = backupMSG.getCount();
+                if (count > 2) {
+
+                    if (id > 0) {
+                        toDB(id, cmd);
+                    }
 
                     waitACKCacheProvider.remove(serial);
                     continue;
                 }
 
-                long count = repeatMSG.getCount();
-                logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", repeatMSG.getTerminal(), CommonUtil.toHex(repeatMSG.getCmd()), serial, count);
-                repeatMSG.setSendTime(now);
+                logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", backupMSG.getTerminal(), CommonUtil.toHex(backupMSG.getCmd()), serial, count);
+                backupMSG.setSendTime(now);
 
-                MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(repeatMSG.getTerminal());
-                pipeline.send(repeatMSG.getTerminal(), repeatMSG.getCmd(), repeatMSG.getContent());
+                MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(backupMSG.getTerminal());
+                pipeline.send(backupMSG.getTerminal(), backupMSG.getCmd(), backupMSG.getContent());
 
-                if (count == 3){
-                    waitACKCacheProvider.remove(serial);
-                }
             }
-
         }
+    }
 
+    /**
+     * 应答超时
+     *
+     * @param id
+     * @param cmd
+     */
+    public void toDB(int id, int cmd) {
+
+        Map valueMap = new HashMap() {
+            {
+                this.put("ResponseStatus", 10);
+            }
+        };
+
+        Map whereMap = new HashMap() {
+            {
+                this.put("Id", id);
+                //this.put("ParamId", cmd);
+            }
+        };
+
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, Constant.DBInfo.DB_CLOUD_INSTRUCTION, valueMap, whereMap);
     }
 }

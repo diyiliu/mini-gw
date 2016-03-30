@@ -7,6 +7,6 @@ import java.io.Serializable;
  * Author: DIYILIU
  * Update: 2016-03-21 10:00
  */
-public class Header implements Serializable{
+public abstract class Header implements Serializable{
 
 }

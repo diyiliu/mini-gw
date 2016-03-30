@@ -1,7 +1,7 @@
 package com.tiza.protocol.m2;
 
 import com.tiza.protocol.IDataProcess;
-import com.tiza.protocol.model.RepeatMSG;
+import com.tiza.protocol.model.BackupMSG;
 import com.tiza.protocol.model.SendMSG;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
@@ -39,6 +39,9 @@ public class M2DataProcess implements IDataProcess {
 
     @Resource
     protected ICache vehicleCacheProvider;
+
+    @Resource
+    private ICache monitorCacheProvider;
 
     protected int cmdId = 0xFF;
 
@@ -188,17 +191,45 @@ public class M2DataProcess implements IDataProcess {
         MSGSenderTask.send(new SendMSG(terminalId, cmd, content));
     }
 
-    public void send(int cmd, M2Header m2Header, Object... argus) {
+    public void send(int cmd, M2Header m2Header) {
         M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
-        byte[] content = process.pack(m2Header.getTerminalId(), m2Header, argus);
+        byte[] content = process.pack(m2Header.getTerminalId(), m2Header);
 
         if (ACK_CMDS.contains(cmd)) {
-            waitACKCacheProvider.put(m2Header.getSerial(), new RepeatMSG(m2Header.getSerial(), new Date(),
+            waitACKCacheProvider.put(m2Header.getSerial(), new BackupMSG(m2Header.getSerial(), new Date(),
                     m2Header.getTerminalId(), cmd, content));
         }
 
         put(m2Header.getTerminalId(), cmd, content);
     }
+
+    public void send(int cmd, M2Header m2Header, int id, Object... argus) {
+        M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
+        byte[] content = process.pack(m2Header.getTerminalId(), m2Header, argus);
+
+        if (ACK_CMDS.contains(cmd)) {
+            BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
+                    m2Header.getTerminalId(), cmd, content);
+            backupMSG.setId(id);
+
+            waitACKCacheProvider.put(m2Header.getSerial(), backupMSG);
+        }
+
+        // 重点监控
+        if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
+            logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", m2Header.getTerminalId(), CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+        }
+
+        put(m2Header.getTerminalId(), cmd, content);
+
+        StringBuilder strb = new StringBuilder();
+        strb.append("UPDATE ").append(Constant.DBInfo.DB_CLOUD_USER).append(".").append(Constant.DBInfo.DB_CLOUD_INSTRUCTION)
+                .append(" SET ResponseStatus=2 WHERE ID=").append(id);
+
+        CommonUtil.dealToDb(strb.toString());
+    }
+
+
 
     protected Position renderPosition(byte[] bytes) {
 

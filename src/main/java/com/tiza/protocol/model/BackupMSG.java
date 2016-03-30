@@ -4,12 +4,13 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Description: RepeatMSG
+ * Description: BackupMSG
  * Author: DIYILIU
  * Update: 2016-03-22 13:43
  */
-public class RepeatMSG {
+public class BackupMSG {
 
+    private int id;
     private int serial;
     private Date sendTime;
     private String terminal;
@@ -17,10 +18,10 @@ public class RepeatMSG {
     private AtomicLong count = new AtomicLong(0);
     private byte[] content;
 
-    public RepeatMSG() {
+    public BackupMSG() {
     }
 
-    public RepeatMSG(int serial, Date sendTime, String terminal, int cmd, byte[] content) {
+    public BackupMSG(int serial, Date sendTime, String terminal, int cmd, byte[] content) {
         this.serial = serial;
         this.sendTime = sendTime;
         this.terminal = terminal;
@@ -70,5 +71,17 @@ public class RepeatMSG {
 
     public long getCount() {
         return count.incrementAndGet();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCount(AtomicLong count) {
+        this.count = count;
     }
 }

@@ -26,6 +26,9 @@ public class MSGSenderTask implements ITask {
     @Resource
     private ICache onlineCacheProvider;
 
+    @Resource
+    private ICache monitorCacheProvider;
+
     @Override
     public void execute() {
 
@@ -38,7 +41,13 @@ public class MSGSenderTask implements ITask {
             byte[] content = msg.getContent();
 
             if (onlineCacheProvider.containsKey(terminalId)) {
-                //logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+
+                /**
+                // 重点监控
+                if (monitorCacheProvider.containsKey(terminalId)) {
+                    logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+                }
+                 */
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
                 pipeline.setSendTime(new Date());
