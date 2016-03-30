@@ -10,6 +10,7 @@ import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
 import com.tiza.util.entity.VehicleInfo;
 import com.tiza.util.task.impl.MSGSenderTask;
+import com.tiza.util.ws.impl.M2Sender;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
@@ -140,6 +141,13 @@ public class M2DataProcess implements IDataProcess {
         return headerToBytes(header);
     }
 
+    public byte[] toSendBytes(int cmd, M2Header m2Header, Object... argus) {
+        M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
+        byte[] content = process.pack(m2Header, argus);
+
+        return headerToSendBytes(content, cmd, m2Header);
+    }
+
     public int getCmdId() {
         return this.cmdId;
     }
@@ -154,7 +162,7 @@ public class M2DataProcess implements IDataProcess {
     }
 
     @Override
-    public byte[] pack(String id, Header header, Object... argus) {
+    public byte[] pack(Header header, Object... argus) {
         return new byte[0];
     }
 
@@ -193,7 +201,7 @@ public class M2DataProcess implements IDataProcess {
 
     public void send(int cmd, M2Header m2Header) {
         M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
-        byte[] content = process.pack(m2Header.getTerminalId(), m2Header);
+        byte[] content = process.pack(m2Header);
 
         if (ACK_CMDS.contains(cmd)) {
             waitACKCacheProvider.put(m2Header.getSerial(), new BackupMSG(m2Header.getSerial(), new Date(),
@@ -205,7 +213,7 @@ public class M2DataProcess implements IDataProcess {
 
     public void send(int cmd, M2Header m2Header, int id, Object... argus) {
         M2DataProcess process = (M2DataProcess) m2CMDCacheProvider.get(cmd);
-        byte[] content = process.pack(m2Header.getTerminalId(), m2Header, argus);
+        byte[] content = process.pack(m2Header, argus);
 
         if (ACK_CMDS.contains(cmd)) {
             BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
@@ -217,7 +225,7 @@ public class M2DataProcess implements IDataProcess {
 
         // 重点监控
         if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
-            logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", m2Header.getTerminalId(), CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
         }
 
         put(m2Header.getTerminalId(), cmd, content);
@@ -228,7 +236,6 @@ public class M2DataProcess implements IDataProcess {
 
         CommonUtil.dealToDb(strb.toString());
     }
-
 
 
     protected Position renderPosition(byte[] bytes) {

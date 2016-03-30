@@ -25,6 +25,9 @@ public class WaitACKTask implements ITask {
     private ICache waitACKCacheProvider;
 
     @Resource
+    private ICache matchACKCacheProvider;
+
+    @Resource
     private ICache onlineCacheProvider;
 
     @Override
@@ -50,7 +53,7 @@ public class WaitACKTask implements ITask {
                 }
 
                 long count = backupMSG.getCount();
-                if (count > 2) {
+                if (count > 3) {
 
                     if (id > 0) {
                         toDB(id, cmd);
@@ -66,6 +69,19 @@ public class WaitACKTask implements ITask {
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(backupMSG.getTerminal());
                 pipeline.send(backupMSG.getTerminal(), backupMSG.getCmd(), backupMSG.getContent());
 
+            }
+        }
+
+        Set<Object> mkeys = matchACKCacheProvider.getKeys();
+        for (Iterator iter = mkeys.iterator(); iter.hasNext(); ) {
+            String key = (String) iter.next();
+            BackupMSG backupMSG = (BackupMSG) matchACKCacheProvider.get(key);
+            int id = backupMSG.getId();
+            int cmd = backupMSG.getCmd();
+
+            if (now.getTime() - backupMSG.getSendTime().getTime() > 15 * 1000) {
+                toDB(id, cmd);
+                matchACKCacheProvider.remove(key);
             }
         }
     }

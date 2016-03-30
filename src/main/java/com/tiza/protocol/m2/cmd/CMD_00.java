@@ -19,7 +19,7 @@ public class CMD_00 extends M2DataProcess {
     }
 
     @Override
-    public byte[] pack(String id, Header header, Object... argus) {
+    public byte[] pack(Header header, Object... argus) {
         M2Header m2Header = (M2Header) header;
 
         byte[] bytes = new byte[0];

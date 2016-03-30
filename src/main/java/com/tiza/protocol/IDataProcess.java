@@ -13,5 +13,5 @@ public interface IDataProcess {
 
     void parse(byte[] content, Header header);
 
-    byte[] pack(String id, Header header, Object... argus);
+    byte[] pack(Header header, Object... argus);
 }

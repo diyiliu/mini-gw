@@ -40,7 +40,8 @@ public class HeartbeatSenderTask implements ITask {
             MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(key);
 
             String terminal = (String) key;
-            byte[] bytes = m2Process.pack(terminal, pipeline.getHeader());
+            byte[] bytes = m2Process.pack(pipeline.getHeader());
+
             pipeline.send(terminal, HEARTBEAT_CMD, bytes);
         }
     }
