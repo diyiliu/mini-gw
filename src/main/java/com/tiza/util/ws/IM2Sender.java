@@ -16,7 +16,7 @@ public interface IM2Sender extends ISender{
     void locate(int id, String terminalId, int interval);
 
     @WebMethod
-    void setParam(int id, String terminalId, int paramId, String paramValue);
+    void setParam(int id, String terminalId, int paramId, Object... paramValue);
 
     @WebMethod
     void queryParam(int id, String terminalId, int paramId);

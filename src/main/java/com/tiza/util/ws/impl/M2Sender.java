@@ -53,7 +53,7 @@ public class M2Sender implements IM2Sender {
     }
 
     @Override
-    public void setParam(int id, String terminalId, int paramId, String paramValue) {
+    public void setParam(int id, String terminalId, int paramId, Object... paramValue) {
 
         if (!onlineCacheProvider.containsKey(terminalId)) {
             logger.error("车辆[{}]离线，[设置参数]命令下发失败！", terminalId);

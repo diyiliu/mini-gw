@@ -70,8 +70,8 @@
     </bean>
     <bean id="heartbeatSenderTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="heartbeatSenderJobDetail"/>
-        <property name="startDelay" value="120000"/>
-        <property name="repeatInterval" value="120000"/>
+        <property name="startDelay" value="100000"/>
+        <property name="repeatInterval" value="110000"/>
     </bean>
 
     <!-- 创建月表 -->
