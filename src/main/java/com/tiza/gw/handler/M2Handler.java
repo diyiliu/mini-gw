@@ -5,6 +5,7 @@ import com.tiza.protocol.model.header.M2Header;
 import com.tiza.protocol.model.pipeline.MSGPipeline;
 import com.tiza.protocol.model.pipeline.MSGUDPPipeline;
 import com.tiza.util.CommonUtil;
+import com.tiza.util.DateUtil;
 import com.tiza.util.JacksonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
@@ -49,7 +50,6 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
         DatagramPacket packet = (DatagramPacket) msg;
 
         ByteBuf buf = packet.content();
@@ -64,35 +64,41 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         if (m2Header == null) {
             return;
         }
-        // 重点监控
-        if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
-            logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
-        }
-
-        toDB(m2Header, bytes);
-
-        MSGPipeline pipeline = new MSGUDPPipeline(ctx, packet.sender());
-        pipeline.setReceiveTime(new Date());
-        pipeline.setHeader(m2Header);
-        onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
-
-        /**
-        // 登录指令
-        if (m2Header.getCmd() == 0x85) {
-            onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
-        }*/
 
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
             logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
             return;
         }
-
-        if (vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
-            process.parse(m2Header.getContent(), m2Header);
-        } else {
+        if (!vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
             logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
+            return;
         }
+
+        // 数据入库
+        toDB(m2Header, bytes);
+
+        // 重点监控
+        if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
+            logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
+        }
+        Date now  = new Date();
+        // 数据解析
+        process.parse(m2Header.getContent(), m2Header);
+
+        if (!onlineCacheProvider.containsKey(m2Header.getTerminalId())){
+            logger.info("终端上线[{}], 上线时间[{}]", m2Header.getTerminalId(), DateUtil.dateToString(now));
+        }
+
+        MSGPipeline pipeline = new MSGUDPPipeline(ctx, packet.sender());
+        pipeline.setReceiveTime(now);
+        pipeline.setHeader(m2Header);
+        onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
+        /**
+         // 登录指令
+         if (m2Header.getCmd() == 0x85) {
+         onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
+         }*/
     }
 
     @Override
