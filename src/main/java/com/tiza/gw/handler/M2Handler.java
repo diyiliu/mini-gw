@@ -56,14 +56,15 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
         buf.markReaderIndex();
         int length = buf.readUnsignedShort();
-        if (buf.readableBytes() < length - 2 + 3) {
-            logger.error("数据包不完整！[{}]", CommonUtil.bytesToString(buf.array()));
-            return;
-        }
         buf.resetReaderIndex();
 
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
+
+        if (bytes.length < length + 3) {
+            logger.error("数据包不完整！[{}]", CommonUtil.bytesToString(bytes));
+            return;
+        }
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
         if (m2Header == null) {
@@ -87,11 +88,11 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
             logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(m2Header.getCmd()), CommonUtil.bytesToString(bytes));
         }
-        Date now  = new Date();
+        Date now = new Date();
         // 数据解析
         process.parse(m2Header.getContent(), m2Header);
 
-        if (!onlineCacheProvider.containsKey(m2Header.getTerminalId())){
+        if (!onlineCacheProvider.containsKey(m2Header.getTerminalId())) {
             logger.info("终端上线[{}], 上线时间[{}]", m2Header.getTerminalId(), DateUtil.dateToString(now));
         }
 
