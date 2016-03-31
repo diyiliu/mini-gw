@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Date;
 
 /**
  * Description: MSGUDPPipeline
@@ -31,7 +32,7 @@ public class MSGUDPPipeline extends MSGPipeline {
     @Override
     public void send(String terminal, int cmd, byte[] bytes) {
         //logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminal, CommonUtil.toHex(cmd), CommonUtil.bytesToString(bytes));
-
+        setSendTime(new Date());
         ctx.writeAndFlush(new DatagramPacket(Unpooled.copiedBuffer(bytes), sender));
     }
 }

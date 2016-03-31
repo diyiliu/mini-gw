@@ -76,6 +76,12 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         pipeline.setHeader(m2Header);
         onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
 
+        /**
+        // 登录指令
+        if (m2Header.getCmd() == 0x85) {
+            onlineCacheProvider.put(m2Header.getTerminalId(), pipeline);
+        }*/
+
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
             logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
