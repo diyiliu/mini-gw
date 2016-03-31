@@ -67,9 +67,6 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         }
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
-        if (m2Header == null) {
-            return;
-        }
 
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
