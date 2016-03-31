@@ -51,10 +51,6 @@ public class M2DataProcess implements IDataProcess {
 
         ByteBuf buf = Unpooled.copiedBuffer(bytes);
         int length = buf.readUnsignedShort();
-        if (buf.readableBytes() < length - 2 + 3) {
-            logger.error("数据包不完整！[{}]", CommonUtil.bytesToString(bytes));
-            return null;
-        }
 
         byte[] termi = new byte[5];
         buf.readBytes(termi);

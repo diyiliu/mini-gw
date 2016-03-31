@@ -53,12 +53,17 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         DatagramPacket packet = (DatagramPacket) msg;
 
         ByteBuf buf = packet.content();
-        byte[] bytes = new byte[buf.readableBytes()];
-        buf.readBytes(bytes);
-        if (bytes.length < 17) {
-            logger.error("数据长度不足17位[{}]", CommonUtil.bytesToString(bytes));
+
+        buf.markReaderIndex();
+        int length = buf.readUnsignedShort();
+        if (buf.readableBytes() < length - 2 + 3) {
+            logger.error("数据包不完整！[{}]", CommonUtil.bytesToString(buf.array()));
             return;
         }
+        buf.resetReaderIndex();
+
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.readBytes(bytes);
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
         if (m2Header == null) {
