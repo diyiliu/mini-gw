@@ -1,15 +1,18 @@
 package com.tiza.gw.handler;
 
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Description: Gl500Handler
  * Author: DIYILIU
  * Update: 2016-03-15 16:03
  */
-
+@Component
+@ChannelHandler.Sharable
 public class Gl500Handler extends ChannelInboundHandlerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -37,11 +40,16 @@ public class Gl500Handler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         System.out.println("收到消息：" + msg);
+
+        String response = "hello client!";
+
+        ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("服务器异常...{}", cause.getStackTrace());
+        logger.error("服务器异常...{}", cause.getMessage());
+        cause.printStackTrace();
         ctx.close();
     }
 

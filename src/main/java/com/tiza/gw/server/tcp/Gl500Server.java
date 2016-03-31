@@ -16,12 +16,13 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
+
 /**
  * Description: Gl500Server
  * Author: DIYILIU
  * Update: 2016-03-15 15:21
  */
-
 public class Gl500Server extends Thread implements IServer {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -30,6 +31,9 @@ public class Gl500Server extends Thread implements IServer {
     public static final int MAX_LENGTH = 1024;
 
     private int port = 8089;
+
+    @Resource
+    private ChannelInboundHandler gl500Handler;
 
     @Override
     public void init() {
@@ -57,7 +61,7 @@ public class Gl500Server extends Thread implements IServer {
 
                             ch.pipeline().addLast(new DelimiterBasedFrameDecoder(MAX_LENGTH, delimiter))
                                     .addLast(new StringDecoder())
-                                    .addLast(new Gl500Handler());
+                                    .addLast(gl500Handler);
                         }
                     });
 
