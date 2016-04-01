@@ -1,0 +1,277 @@
+[ INFO ] [2016-03-31 10:37:09] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 10:37:09] com.tiza.gw.server.udp.M2Server.Thread-2 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 10:37:11] com.tiza.gw.server.tcp.Gl500Server.Thread-1 [69] - Gl500服务器启动...
+[ INFO ] [2016-03-31 10:37:13] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 10:37:13] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 10:37:13] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 10:37:13] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 10:37:13] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 10:37:13] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 10:37:13] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 10:37:13] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@4b5189ac
+[ INFO ] [2016-03-31 10:37:19] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 10:37:19] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-1 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 10:37:19] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 10:37:22] com.tiza.util.client.impl.DBPClient.Thread-3 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 10:37:33] com.tiza.util.client.impl.DBPClient.Thread-3 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 10:37:44] com.tiza.util.client.impl.DBPClient.Thread-3 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 10:37:47] com.tiza.gw.handler.Gl500Handler.nioEventLoopGroup-5-1 [27] - [192.168.1.19:49561]建立连接...
+[ INFO ] [2016-03-31 10:37:55] com.tiza.util.client.impl.DBPClient.Thread-3 [114] - DBP客户端, 尝试第4次重连...
+[ INFO ] [2016-03-31 10:38:06] com.tiza.util.client.impl.DBPClient.Thread-3 [114] - DBP客户端, 尝试第5次重连...
+[ INFO ] [2016-03-31 10:38:07] com.tiza.gw.handler.Gl500Handler.nioEventLoopGroup-5-1 [33] - [192.168.1.19:49561]关闭连接...
+[ INFO ] [2016-03-31 10:51:18] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 10:51:18] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 10:51:19] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 10:51:19] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 10:51:19] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 10:51:19] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 10:51:19] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 10:51:19] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 10:51:19] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 10:51:19] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 10:51:20] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 10:51:20] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 10:51:24] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-5 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 10:51:30] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 10:51:41] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 10:51:52] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 10:51:53] com.tiza.util.client.impl.DBPClient.Thread-2 [94] - DBP客户端启动...
+[ INFO ] [2016-03-31 11:03:49] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:03:49] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:03:52] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:03:52] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:03:52] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:03:52] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:03:52] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:03:52] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:03:52] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:03:52] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:04:02] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 11:04:13] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 11:04:19] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:04:19] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:04:24] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 11:04:35] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第4次重连...
+[ INFO ] [2016-03-31 11:04:46] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第5次重连...
+[ INFO ] [2016-03-31 11:05:47] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:05:48] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:05:52] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:05:52] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:05:52] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:05:52] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:05:52] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:05:52] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:05:52] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:05:52] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:05:57] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-1 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:05:57] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:05:57] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:06:03] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 11:06:14] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 11:06:25] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 11:17:44] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:17:45] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:17:46] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:17:46] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:17:46] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:17:46] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:17:46] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:17:46] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:17:46] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:17:46] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:17:48] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:17:48] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:17:51] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-5 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:17:57] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 11:18:08] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 11:18:17] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-2-1 [69] - 收到消息，终端[13500003007], 命令[80], 原始数据[00 21 03 24 A9 B2 BF 04 01 01 02 00 00 80 01 58 48 B6 06 CC E1 11 3C 2D 00 3C 00 00 00 00 10 03 1F 98 0D 0A]
+[ INFO ] [2016-03-31 11:18:19] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 11:18:19] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-2-1 [69] - 收到消息，终端[13500003007], 命令[82], 原始数据[00 12 03 24 A9 B2 BF 04 01 01 02 00 01 82 00 01 01 00 14 0D 0A]
+[ INFO ] [2016-03-31 11:18:20] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-2-1 [69] - 收到消息，终端[13500003007], 命令[85], 原始数据[00 1E 03 24 A9 B2 BF 04 01 01 02 00 00 85 01 58 48 B6 06 CC E1 11 3C 2D 00 3C 00 00 00 00 AE 0D 0A]
+[ INFO ] [2016-03-31 11:18:30] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第4次重连...
+[ INFO ] [2016-03-31 11:18:52] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:18:52] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:18:55] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:18:55] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:18:55] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:18:55] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:18:55] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:18:55] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:18:55] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:18:55] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:18:56] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:18:56] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:19:00] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-6 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:19:06] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 11:20:12] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:20:13] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:20:14] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:20:14] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:20:14] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:20:14] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:20:14] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:20:14] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:20:14] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:20:14] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:20:15] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:20:15] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:20:19] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-5 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:20:25] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 11:20:36] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 11:20:47] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 11:20:58] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第4次重连...
+[ INFO ] [2016-03-31 11:21:09] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第5次重连...
+[ INFO ] [2016-03-31 11:25:19] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-10 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:45:52] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:45:52] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:45:53] com.tiza.util.client.impl.DBPClient.Thread-2 [94] - DBP客户端启动...
+[ INFO ] [2016-03-31 11:45:53] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:45:53] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:45:53] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:45:53] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:45:53] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:45:53] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:45:53] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:45:53] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:45:55] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:45:55] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:45:58] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-5 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:47:47] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 11:47:47] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 11:47:51] com.tiza.util.client.impl.DBPClient.Thread-2 [94] - DBP客户端启动...
+[ INFO ] [2016-03-31 11:47:51] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 11:47:51] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 11:47:51] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 11:47:51] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 11:47:51] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 11:47:51] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 11:47:51] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 11:47:51] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 11:47:59] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 11:47:59] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 11:47:59] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-1 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 11:48:12] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [96] - 终端上线[13500003007], 上线时间[2016-03-31 11:48:12]
+[ INFO ] [2016-03-31 13:31:01] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 13:31:01] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 13:31:03] com.tiza.util.client.impl.DBPClient.Thread-2 [94] - DBP客户端启动...
+[ INFO ] [2016-03-31 13:31:03] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 13:31:03] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 13:31:03] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 13:31:03] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 13:31:03] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 13:31:03] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 13:31:03] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 13:31:03] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 13:31:05] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 13:31:05] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 13:31:08] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-5 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 13:32:38] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [93] - 终端上线[13500003007], 上线时间[2016-03-31 13:32:38]
+[ INFO ] [2016-03-31 13:34:37] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[81], 原始数据[00 0E 03 24 A9 B2 BF 04 01 01 02 00 01 81 0B 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:34:43] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 60 26 06 CC F8 81 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 22 2B AB 0D 0A]
+[ INFO ] [2016-03-31 13:35:07] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[81], 原始数据[00 0E 03 24 A9 B2 BF 04 01 01 02 00 01 81 0B 0D 0A]
+[ INFO ] [2016-03-31 13:35:13] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 64 0E 06 CC FC 69 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 23 0D 4C 0D 0A]
+[ INFO ] [2016-03-31 13:35:47] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[80], 原始数据[00 21 03 24 A9 B2 BF 04 01 01 02 00 00 80 01 58 48 B6 06 CC E1 11 3C 2D 00 3C 00 00 00 00 10 03 1F 98 0D 0A]
+[ INFO ] [2016-03-31 13:35:48] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[82], 原始数据[00 12 03 24 A9 B2 BF 04 01 01 02 00 01 82 00 05 01 00 10 0D 0A]
+[ INFO ] [2016-03-31 13:35:49] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[85], 原始数据[00 1E 03 24 A9 B2 BF 04 01 01 02 00 00 85 01 58 48 B6 06 CC E1 11 3C 2D 00 3C 00 00 00 00 AE 0D 0A]
+[ INFO ] [2016-03-31 13:35:51] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[83], 原始数据[00 24 03 24 A9 B2 BF 04 01 01 02 00 00 83 01 58 48 B6 06 CC E1 11 3C 2D 00 3C 00 00 00 00 10 03 1F 0D 23 33 83 0D 0A]
+[ INFO ] [2016-03-31 13:36:07] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [86] - 收到消息，终端[13500003007], 命令[81], 原始数据[00 0E 03 24 A9 B2 BF 04 01 01 02 00 01 81 0B 0D 0A]
+[ INFO ] [2016-03-31 13:36:08] com.tiza.util.task.impl.RefreshVehicleTask.org.springframework.scheduling.quartz.SchedulerFactoryBean#0_Worker-1 [36] - 刷新车辆列表...
+[ INFO ] [2016-03-31 17:29:34] com.alibaba.druid.pool.DruidDataSource.main [721] - {dataSource-1} inited
+[ INFO ] [2016-03-31 17:29:34] com.tiza.gw.server.udp.M2Server.Thread-1 [35] - M2服务器启动...
+[ INFO ] [2016-03-31 17:29:40] org.quartz.impl.StdSchedulerFactory.main [1172] - Using default implementation for ThreadExecutor
+[ INFO ] [2016-03-31 17:29:40] org.quartz.core.SchedulerSignalerImpl.main [61] - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[ INFO ] [2016-03-31 17:29:40] org.quartz.core.QuartzScheduler.main [240] - Quartz Scheduler v.2.2.2 created.
+[ INFO ] [2016-03-31 17:29:40] org.quartz.simpl.RAMJobStore.main [155] - RAMJobStore initialized.
+[ INFO ] [2016-03-31 17:29:40] org.quartz.core.QuartzScheduler.main [305] - Scheduler meta-data: Quartz Scheduler (v2.2.2) 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[ INFO ] [2016-03-31 17:29:40] org.quartz.impl.StdSchedulerFactory.main [1327] - Quartz scheduler 'org.springframework.scheduling.quartz.SchedulerFactoryBean#0' initialized from an externally provided properties instance.
+[ INFO ] [2016-03-31 17:29:40] org.quartz.impl.StdSchedulerFactory.main [1331] - Quartz scheduler version: 2.2.2
+[ INFO ] [2016-03-31 17:29:40] org.quartz.core.QuartzScheduler.main [2311] - JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@27508c5d
+[ INFO ] [2016-03-31 17:29:48] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第1次重连...
+[ INFO ] [2016-03-31 17:29:59] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第2次重连...
+[ INFO ] [2016-03-31 17:30:11] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第3次重连...
+[ INFO ] [2016-03-31 17:30:16] org.quartz.core.QuartzScheduler.main [575] - Scheduler org.springframework.scheduling.quartz.SchedulerFactoryBean#0_$_NON_CLUSTERED started.
+[ INFO ] [2016-03-31 17:30:16] com.tiza.util.listener.CMDInitializer.main [29] - 协议解析初始化...
+[ INFO ] [2016-03-31 17:30:22] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第4次重连...
+[ INFO ] [2016-03-31 17:30:33] com.tiza.util.client.impl.DBPClient.Thread-2 [114] - DBP客户端, 尝试第5次重连...
