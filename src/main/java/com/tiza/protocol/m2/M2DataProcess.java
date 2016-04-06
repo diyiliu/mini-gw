@@ -192,6 +192,11 @@ public class M2DataProcess implements IDataProcess {
 
     protected void put(String terminalId, int cmd, byte[] content) {
 
+        // 重点监控
+        if (monitorCacheProvider.containsKey(terminalId)) {
+            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+        }
+
         MSGSenderTask.send(new SendMSG(terminalId, cmd, content));
     }
 
@@ -203,7 +208,6 @@ public class M2DataProcess implements IDataProcess {
             waitACKCacheProvider.put(m2Header.getSerial(), new BackupMSG(m2Header.getSerial(), new Date(),
                     m2Header.getTerminalId(), cmd, content));
         }
-
         put(m2Header.getTerminalId(), cmd, content);
     }
 
@@ -218,12 +222,6 @@ public class M2DataProcess implements IDataProcess {
 
             waitACKCacheProvider.put(m2Header.getSerial(), backupMSG);
         }
-
-        // 重点监控
-        if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
-            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", m2Header.getTerminalId(), CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
-        }
-
         put(m2Header.getTerminalId(), cmd, content);
 
         StringBuilder strb = new StringBuilder();
