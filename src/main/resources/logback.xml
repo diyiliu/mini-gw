@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
     <property name="USER_HOME" value="./logs/"/>
-
     <prudent>true</prudent>
 
     <!-- 打印到控制台-->
@@ -22,7 +21,7 @@
         </filter>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/DEBUG-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${USER_HOME}/DEBUG-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 保存前7天的日志文件 -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -30,6 +29,7 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>100MB</maxFileSize>
         </triggeringPolicy>
+        <!--格式化输出-->
         <layout>
             <Pattern>
                 [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n
@@ -46,10 +46,9 @@
             <OnMatch>ACCEPT</OnMatch>
             <OnMismatch>DENY</OnMismatch>
         </filter>
-        <file>${USER_HOME}/INFO.log</file>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/INFO-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${USER_HOME}/INFO-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 保存前7天的日志文件 -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -57,9 +56,12 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>100MB</maxFileSize>
         </triggeringPolicy>
-        <encoder><!--格式化输出-->
-            <pattern>[ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n</pattern>
-        </encoder>
+        <!--格式化输出-->
+        <layout>
+            <Pattern>
+                [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n
+            </Pattern>
+        </layout>
     </appender>
 
     <!--WARN-->
@@ -71,8 +73,9 @@
             <OnMatch>ACCEPT</OnMatch>
             <OnMismatch>DENY</OnMismatch>
         </filter>
+        <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/WARN-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${USER_HOME}/WARN-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 保存前7天的日志文件 -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
@@ -80,6 +83,7 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>100MB</maxFileSize>
         </triggeringPolicy>
+        <!--格式化输出-->
         <layout>
             <Pattern>
                 [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n
@@ -97,7 +101,6 @@
             <OnMatch>ACCEPT</OnMatch>
             <OnMismatch>DENY</OnMismatch>
         </filter>
-        <file>${USER_HOME}/ERROR.log</file>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${USER_HOME}/ERROR-%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -108,9 +111,12 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>100MB</maxFileSize>
         </triggeringPolicy>
-        <encoder><!--格式化输出-->
-            <pattern>[ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n</pattern>
-        </encoder>
+        <!--格式化输出-->
+        <layout>
+            <Pattern>
+                [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96}.%thread [%line] - %msg%n
+            </Pattern>
+        </layout>
     </appender>
 
     <!-- 设置日志级别 -->
@@ -121,5 +127,4 @@
         <appender-ref ref="ERROR"/>
         <appender-ref ref="STDOUT"/>
     </root>
-
 </configuration>

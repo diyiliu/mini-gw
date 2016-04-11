@@ -79,7 +79,7 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         }
 
         // 数据入库
-        toDB(m2Header, bytes);
+        process.toDB(m2Header.getTerminalId(), m2Header.getCmd(), 0, bytes);
 
         // 重点监控
         if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {
@@ -109,18 +109,5 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
         logger.error("服务器异常: {}", cause.getMessage());
         cause.printStackTrace();
         ctx.close();
-    }
-
-    public void toDB(M2Header m2Header, byte[] content) {
-
-        Map map = new HashMap() {{
-            this.put("DeviceId", m2Header.getTerminalId());
-            this.put("ReceiveTime", new Date());
-            this.put("DataFlow", 0);
-            this.put("Instruction", CommonUtil.toHex(m2Header.getCmd()));
-            this.put("RawData", CommonUtil.bytesToStr(content));
-        }};
-
-        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_RAWDATA, new Date()), map);
     }
 }

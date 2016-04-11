@@ -86,7 +86,7 @@ public class CommonUtil {
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.YEAR, 2000 + bytes[0]);
-        calendar.set(Calendar.MONTH, bytes[1]);
+        calendar.set(Calendar.MONTH, bytes[1] - 1);
         calendar.set(Calendar.DAY_OF_MONTH, bytes[2]);
 
         if (bytes.length == 6) {
@@ -314,8 +314,7 @@ public class CommonUtil {
 
        // System.out.println(keepDecimal(12, 3));
 
-        byte[] bytes = longToBytes(6553, 2);
-        System.out.println(bytesToLong(bytes));
+        byte[] bytes =  ipToBytes("218.3.247.227");
     }
 
 

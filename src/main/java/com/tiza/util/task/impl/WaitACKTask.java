@@ -68,7 +68,6 @@ public class WaitACKTask implements ITask {
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(backupMSG.getTerminal());
                 pipeline.send(backupMSG.getTerminal(), backupMSG.getCmd(), backupMSG.getContent());
-
             }
         }
 
@@ -79,7 +78,7 @@ public class WaitACKTask implements ITask {
             int id = backupMSG.getId();
             int cmd = backupMSG.getCmd();
 
-            if (now.getTime() - backupMSG.getSendTime().getTime() > 15 * 1000) {
+            if (now.getTime() - backupMSG.getSendTime().getTime() > 30 * 1000) {
                 toDB(id, cmd);
                 matchACKCacheProvider.remove(key);
             }

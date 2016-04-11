@@ -1,5 +1,0 @@
-[ WARN ] [2016-03-31 10:38:07] com.tiza.util.client.impl.DBPClient.Thread-3 [104] - DBP客户端重连失败！
-[ WARN ] [2016-03-31 11:04:47] com.tiza.util.client.impl.DBPClient.Thread-2 [104] - DBP客户端重连失败！
-[ WARN ] [2016-03-31 11:21:10] com.tiza.util.client.impl.DBPClient.Thread-2 [104] - DBP客户端重连失败！
-[ WARN ] [2016-03-31 13:31:05] com.tiza.gw.handler.M2Handler.nioEventLoopGroup-3-1 [77] - 车辆未注册！[13500003007]
-[ WARN ] [2016-03-31 17:30:34] com.tiza.util.client.impl.DBPClient.Thread-2 [104] - DBP客户端重连失败！

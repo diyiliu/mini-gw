@@ -5,14 +5,14 @@ import com.tiza.protocol.model.BackupMSG;
 import com.tiza.protocol.model.header.Header;
 import com.tiza.protocol.model.header.M2Header;
 import com.tiza.util.CommonUtil;
-import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description: CMD_84
@@ -26,9 +26,6 @@ public class CMD_84 extends M2DataProcess {
     public CMD_84() {
         this.cmdId = 0x84;
     }
-
-    @Resource
-    private ICache matchACKCacheProvider;
 
     @Override
     public void parse(byte[] content, Header header) {

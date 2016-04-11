@@ -89,6 +89,28 @@ public class M2Sender implements IM2Sender {
     }
 
     @Override
+    public void update(int id, String terminalId, String url) {
+        if (!onlineCacheProvider.containsKey(terminalId)) {
+            logger.error("车辆[{}]离线，[查询参数]命令下发失败！", terminalId);
+            return;
+        }
+        int cmd = 0x06;
+
+        MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
+        M2Header m2Header = (M2Header) pipeline.getHeader();
+
+        BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
+                m2Header.getTerminalId(), cmd, m2DataProcess.toSendBytes(cmd, m2Header, url));
+        backupMSG.setId(id);
+
+        String key = terminalId + CommonUtil.toHex(cmd);
+
+        matchACKCacheProvider.put(key, backupMSG);
+
+        m2DataProcess.send(cmd, m2Header, id, url);
+    }
+
+    @Override
     public void init() {
 
         Endpoint.publish(address, this);

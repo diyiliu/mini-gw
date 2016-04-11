@@ -39,6 +39,9 @@ public class M2DataProcess implements IDataProcess {
     protected ICache waitACKCacheProvider;
 
     @Resource
+    protected ICache matchACKCacheProvider;
+
+    @Resource
     protected ICache vehicleCacheProvider;
 
     @Resource
@@ -190,14 +193,30 @@ public class M2DataProcess implements IDataProcess {
         }
     };
 
+    protected final static List<Integer> DOUBLE_ACK_CMDS = new ArrayList<Integer>() {
+        {
+            this.add(0x06);
+        }
+    };
+
+    protected boolean isDoubleACK(int cmd){
+
+        if (DOUBLE_ACK_CMDS.contains(cmd)){
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+
     protected void put(String terminalId, int cmd, byte[] content) {
 
         // 重点监控
         if (monitorCacheProvider.containsKey(terminalId)) {
             logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
         }
-
         MSGSenderTask.send(new SendMSG(terminalId, cmd, content));
+        // 持久化数据库
+        toDB(terminalId, cmd, 1, content);
     }
 
     public void send(int cmd, M2Header m2Header) {
@@ -226,7 +245,7 @@ public class M2DataProcess implements IDataProcess {
 
         StringBuilder strb = new StringBuilder();
         strb.append("UPDATE ").append(Constant.DBInfo.DB_CLOUD_USER).append(".").append(Constant.DBInfo.DB_CLOUD_INSTRUCTION)
-                .append(" SET ResponseStatus=2 WHERE ID=").append(id);
+                .append(" SET ResponseStatus=1 WHERE ID=").append(id);
 
         CommonUtil.dealToDb(strb.toString());
     }
@@ -710,6 +729,19 @@ public class M2DataProcess implements IDataProcess {
         CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
                 Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
                 valueMap, whereMap);
+    }
+
+    public void toDB(String terminal, int cmd, int flow, byte[] content) {
+
+        Map map = new HashMap() {{
+            this.put("DeviceId", terminal);
+            this.put("ReceiveTime", new Date());
+            this.put("DataFlow", flow);
+            this.put("Instruction", CommonUtil.toHex(cmd));
+            this.put("RawData", CommonUtil.bytesToStr(content));
+        }};
+
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_RAWDATA, new Date()), map);
     }
 
 }

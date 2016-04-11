@@ -10,7 +10,7 @@ import javax.jws.WebService;
  */
 
 @WebService
-public interface IM2Sender extends ISender{
+public interface IM2Sender extends ISender {
 
     @WebMethod
     void locate(int id, String terminalId, int interval);
@@ -20,4 +20,7 @@ public interface IM2Sender extends ISender{
 
     @WebMethod
     void queryParam(int id, String terminalId, int paramId);
+
+    @WebMethod
+    void update(int id, String terminalId, String url);
 }
