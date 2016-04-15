@@ -37,6 +37,8 @@ public class MobileDataProcess implements IDataProcess {
     @Resource
     protected ICache vehicleCacheProvider;
 
+    @Resource
+    protected ICache waitACKCacheProvider;
 
     protected int cmdId = 0xFF;
 
@@ -76,8 +78,26 @@ public class MobileDataProcess implements IDataProcess {
 
     @Override
     public void parse(byte[] content, Header header) {
+        MobileHeader mobileHeader = (MobileHeader) header;
 
+        List<Tlv> tlvList = mobileHeader.getContent();
+        for (Tlv tlv : tlvList) {
+            int tag = tlv.getTag();
+            int value = tlv.getValue()[0];
 
+            int rs = value == 0x00? 11: 12;
+
+            StringBuilder strb = new StringBuilder();
+            strb.append("UPDATE ").append(Constant.DBInfo.DB_CLOUD_USER).append(".").append(Constant.DBInfo.DB_CLOUD_INSTRUCTION)
+                    .append(" SET ResponseStatus=").append(rs)
+                    .append(" WHERE ResponseStatus=1")
+                    .append(" AND DeviceId='").append(mobileHeader.getDevIMEI()).append("'")
+                    .append(" AND ParamId=").append(tag);
+
+            CommonUtil.dealToDb(strb.toString());
+
+            waitACKCacheProvider.remove(mobileHeader.getDevIMEI() + tag);
+        }
     }
 
     @Override
