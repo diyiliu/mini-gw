@@ -85,16 +85,23 @@ public class MobileDataProcess implements IDataProcess {
             int tag = tlv.getTag();
             int value = tlv.getValue()[0];
 
-            int rs = value == 0x00? 11: 12;
+            Map valueMap = new HashMap() {
+                {
+                    this.put("ResponseStatus", value == 0x00? 11: 12);
+                    this.put("ResponseDate", new Date());
+                }
+            };
 
-            StringBuilder strb = new StringBuilder();
-            strb.append("UPDATE ").append(Constant.DBInfo.DB_CLOUD_USER).append(".").append(Constant.DBInfo.DB_CLOUD_INSTRUCTION)
-                    .append(" SET ResponseStatus=").append(rs)
-                    .append(" WHERE ResponseStatus=1")
-                    .append(" AND DeviceId='").append(mobileHeader.getDevIMEI()).append("'")
-                    .append(" AND ParamId=").append(tag);
+            Map whereMap = new HashMap() {
+                {
+                    this.put("ResponseStatus", 1);
+                    this.put("DeviceId", mobileHeader.getDevIMEI());
+                    this.put("ParamId", tag);
+                }
+            };
 
-            CommonUtil.dealToDb(strb.toString());
+            // 更新数据库
+            CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, Constant.DBInfo.DB_CLOUD_INSTRUCTION, valueMap, whereMap);
 
             waitACKCacheProvider.remove(mobileHeader.getDevIMEI() + tag);
         }
