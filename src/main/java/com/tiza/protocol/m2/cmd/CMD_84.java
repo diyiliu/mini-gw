@@ -1,9 +1,9 @@
 package com.tiza.protocol.m2.cmd;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.BackupMSG;
-import com.tiza.protocol.model.header.Header;
-import com.tiza.protocol.model.header.M2Header;
+import com.tiza.model.BackupMSG;
+import com.tiza.model.header.Header;
+import com.tiza.model.header.M2Header;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;

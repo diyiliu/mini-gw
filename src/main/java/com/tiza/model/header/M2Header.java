@@ -1,4 +1,4 @@
-package com.tiza.protocol.model.header;
+package com.tiza.model.header;
 
 /**
  * Description: M2Header
@@ -7,18 +7,18 @@ package com.tiza.protocol.model.header;
  */
 public class M2Header extends Header{
 
-    protected int cmd;
-    protected int length;
-    protected String terminalId;
-    protected int version;
-    protected int factory;
-    protected int terminalType;
-    protected int user;
-    protected int serial;
-    protected byte[] content = null;
-    protected int check;
+    private int cmd;
+    private int length;
+    private String terminalId;
+    private int version;
+    private int factory;
+    private int terminalType;
+    private int user;
+    private int serial;
+    private byte[] content = null;
+    private int check;
 
-    protected byte[] end = new byte[]{0x0D, 0x0A};
+    private byte[] end = new byte[]{0x0D, 0x0A};
 
     public M2Header() {
 

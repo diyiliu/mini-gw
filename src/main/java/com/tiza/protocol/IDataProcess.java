@@ -1,6 +1,6 @@
 package com.tiza.protocol;
 
-import com.tiza.protocol.model.header.Header;
+import com.tiza.model.header.Header;
 
 /**
  * Description: IDataProcess
@@ -14,4 +14,6 @@ public interface IDataProcess {
     void parse(byte[] content, Header header);
 
     byte[] pack(Header header, Object... argus);
+
+    void init();
 }

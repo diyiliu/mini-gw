@@ -1,7 +1,7 @@
 package com.tiza.util.task.impl;
 
-import com.tiza.protocol.model.SendMSG;
-import com.tiza.protocol.model.pipeline.MSGPipeline;
+import com.tiza.model.SendMSG;
+import com.tiza.model.pipeline.MSGPipeline;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.task.ITask;
@@ -42,16 +42,17 @@ public class MSGSenderTask implements ITask {
 
             if (onlineCacheProvider.containsKey(terminalId)) {
 
-                /**
                 // 重点监控
                 if (monitorCacheProvider.containsKey(terminalId)) {
-                    logger.info("下发消息，终端[{}], 命令[{}H], 内容[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+                    logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
                 }
-                 */
 
                 MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(terminalId);
                 pipeline.setSendTime(new Date());
                 pipeline.send(terminalId, cmd, content);
+
+                // 持久化数据库
+                CommonUtil.toRawData(terminalId, cmd, 1, content);
             }
         }
 

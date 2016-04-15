@@ -1,4 +1,4 @@
-package com.tiza.protocol.model.header;
+package com.tiza.model.header;
 
 import java.io.Serializable;
 

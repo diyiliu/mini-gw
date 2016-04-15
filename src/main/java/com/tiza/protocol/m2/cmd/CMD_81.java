@@ -1,7 +1,7 @@
 package com.tiza.protocol.m2.cmd;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.header.Header;
+import com.tiza.model.header.Header;
 import org.springframework.stereotype.Service;
 
 /**

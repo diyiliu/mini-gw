@@ -7,10 +7,7 @@ import io.netty.buffer.Unpooled;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,7 +138,7 @@ public class CommonUtil {
             buf.append(String.format("%02X", getNoSin(a)));
         }
 
-        return buf.substring(0, buf.length() - 1);
+        return buf.toString();
     }
 
     public static String bytesToString(byte[] bytes) {
@@ -152,6 +149,28 @@ public class CommonUtil {
 
         return buf.substring(0, buf.length() - 1);
     }
+
+    public static byte[] hexStringToBytes(String hex){
+
+        char[] charArray = hex.toCharArray();
+
+        if (charArray.length % 2 != 0){
+            // 无法转义
+            return null;
+        }
+
+        int length =charArray.length / 2;
+        byte[] bytes = new byte[length];
+
+        for (int i = 0; i < length; i++){
+
+            String b = new String(new char[]{charArray[i * 2], charArray[i * 2 + 1]});
+            bytes[i] = (byte) Integer.parseInt(b, 16);
+        }
+
+        return bytes;
+    }
+
 
     public static String toHex(int i) {
 
@@ -242,6 +261,24 @@ public class CommonUtil {
         return array;
     }
 
+    public static String parseIMEI(byte[] bytes){
+
+        String imei = bytesToStr(bytes);
+
+        return imei.substring(0, 15);
+    }
+
+    public static byte[] packIMEI(String imei){
+
+        if (imei.length() == 15){
+            imei += 0;
+        }
+
+        return hexStringToBytes(imei);
+    }
+
+
+
     public static byte getCheck(byte[] bytes) {
         byte b = bytes[0];
         for (int i = 1; i < bytes.length; i++) {
@@ -254,6 +291,8 @@ public class CommonUtil {
     public static int renderHeight(byte[] bytes) {
 
         int plus = bytes[0] & 0x80;
+
+        bytes[0] &= 0x7F;
 
         if (plus == 0) {
             return (int) bytesToLong(bytes);
@@ -292,6 +331,20 @@ public class CommonUtil {
         DBPClient.sendSQL(sql);
     }
 
+    public static void toRawData(String terminal, int cmd, int flow, byte[] content){
+
+        Map map = new HashMap() {{
+            this.put("DeviceId", terminal);
+            this.put("ReceiveTime", new Date());
+            this.put("DataFlow", flow);
+            this.put("Instruction", CommonUtil.toHex(cmd));
+            this.put("RawData", CommonUtil.bytesToStr(content));
+        }};
+
+        dealToDb(Constant.DBInfo.DB_CLOUD_USER, CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_RAWDATA, new Date()), map);
+    }
+
+
     public static String monthTable(String table, Date date) {
 
         return table + DateUtil.dateToString(date, "%1$tY%1$tm");
@@ -314,7 +367,8 @@ public class CommonUtil {
 
        // System.out.println(keepDecimal(12, 3));
 
-        byte[] bytes =  ipToBytes("218.3.247.227");
+        System.out.println(renderHeight(new byte[]{(byte) Integer.parseInt("83", 16),
+                (byte) Integer.parseInt("E8", 16)}));
     }
 
 

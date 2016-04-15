@@ -1,12 +1,15 @@
 package com.tiza.protocol.m2.cmd;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.header.Header;
-import com.tiza.protocol.model.header.M2Header;
+import com.tiza.model.header.Header;
+import com.tiza.model.header.M2Header;
 import com.tiza.util.CommonUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Description: CMD_04
@@ -26,39 +29,43 @@ public class CMD_04 extends M2DataProcess {
         M2Header m2Header = (M2Header) header;
 
         int paramId = (int) argus[0];
-        Object[] values = (Object[]) argus[1];
-        
+        Object[] params = (Object[]) argus[1];
+
+        List list = Arrays.asList(params);
+        String[] values = new String[list.size()];
+        list.toArray(values);
+
         byte[] value;
         switch (paramId) {
             case 0x06:
-                value = CommonUtil.ipToBytes((String) values[0]);
+                value = CommonUtil.ipToBytes(values[0]);
                 break;
             case 0x08:
-                value = CommonUtil.ipToBytes((String) values[0]);
+                value = CommonUtil.ipToBytes(values[0]);
                 break;
             case 0x0A:
-                value = CommonUtil.longToBytes((int) values[0], 2);
+                value = CommonUtil.longToBytes(Integer.valueOf(String.valueOf(values[0])), 2);
                 break;
             case 0x0B:
-                value = new byte[]{(byte) ((int) values[0])};
+                value = new byte[]{(byte) Integer.valueOf(values[0]).intValue()};
                 break;
             case 0x0D:
-                value = CommonUtil.longToBytes((int) values[0], 2);
+                value = CommonUtil.longToBytes(Integer.valueOf(values[0]), 2);
                 break;
             case 0x0E:
                 ByteBuf b = Unpooled.buffer(4);
-                b.writeBytes(CommonUtil.longToBytes((int) values[0], 2));
-                b.writeBytes(CommonUtil.longToBytes((int) values[1], 2));
+                b.writeBytes(CommonUtil.longToBytes(Integer.valueOf(values[0]), 2));
+                b.writeBytes(CommonUtil.longToBytes(Integer.valueOf(values[1]), 2));
                 value = b.array();
                 break;
             case 0x0F:
-                value = CommonUtil.longToBytes((int) values[0], 5);
+                value = CommonUtil.longToBytes(Integer.valueOf(values[0]), 5);
                 break;
             case 0x10:
-                value = CommonUtil.longToBytes((int) values[0], 4);
+                value = CommonUtil.longToBytes(Integer.valueOf(values[0]), 4);
                 break;
             default:
-                String paramValue = (String) values[0];
+                String paramValue = values[0];
                 value = paramValue.getBytes();
         }
 

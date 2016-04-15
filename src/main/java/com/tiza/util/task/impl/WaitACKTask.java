@@ -1,7 +1,7 @@
 package com.tiza.util.task.impl;
 
-import com.tiza.protocol.model.BackupMSG;
-import com.tiza.protocol.model.pipeline.MSGPipeline;
+import com.tiza.model.BackupMSG;
+import com.tiza.model.SendMSG;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
@@ -21,6 +21,8 @@ public class WaitACKTask implements ITask {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final static int DELAY = 3;
+
     @Resource
     private ICache waitACKCacheProvider;
 
@@ -36,38 +38,36 @@ public class WaitACKTask implements ITask {
 
         Set<Object> keys = waitACKCacheProvider.getKeys();
         for (Iterator iter = keys.iterator(); iter.hasNext(); ) {
-            int serial = (Integer) iter.next();
-            BackupMSG backupMSG = (BackupMSG) waitACKCacheProvider.get(serial);
+            Object key = iter.next();
+            BackupMSG backupMSG = (BackupMSG) waitACKCacheProvider.get(key);
             int id = backupMSG.getId();
             int cmd = backupMSG.getCmd();
 
-            if (now.getTime() - backupMSG.getSendTime().getTime() > 8 * 1000) {
+            if (now.getTime() - backupMSG.getSendTime().getTime() > (backupMSG.getRepeatTime() + DELAY) * 1000) {
 
                 if (!onlineCacheProvider.containsKey(backupMSG.getTerminal())) {
-
+                    logger.warn("终端[{}]离线, 应答命令[{}]超时!", backupMSG.getTerminal(), backupMSG.getCmd());
                     if (id > 0) {
                         toDB(id, cmd);
                     }
-                    waitACKCacheProvider.remove(serial);
+                    waitACKCacheProvider.remove(key);
                     continue;
                 }
 
                 long count = backupMSG.getCount();
-                if (count > 3) {
+                if (count > backupMSG.getRepeatCount()) {
 
                     if (id > 0) {
                         toDB(id, cmd);
                     }
 
-                    waitACKCacheProvider.remove(serial);
+                    waitACKCacheProvider.remove(key);
                     continue;
                 }
-
-                logger.info("消息重发，终端[{}], 指令[{}], 序列号[{}], 第[{}]次重发...", backupMSG.getTerminal(), CommonUtil.toHex(backupMSG.getCmd()), serial, count);
+                logger.info("消息重发，终端[{}], 指令[{}], 标识符[{}], 第[{}]次重发...", backupMSG.getTerminal(), CommonUtil.toHex(backupMSG.getCmd()), key, count);
                 backupMSG.setSendTime(now);
 
-                MSGPipeline pipeline = (MSGPipeline) onlineCacheProvider.get(backupMSG.getTerminal());
-                pipeline.send(backupMSG.getTerminal(), backupMSG.getCmd(), backupMSG.getContent());
+                MSGSenderTask.send(new SendMSG(backupMSG.getTerminal(), backupMSG.getCmd(), backupMSG.getContent()));
             }
         }
 

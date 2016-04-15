@@ -1,16 +1,16 @@
 package com.tiza.protocol.m2;
 
 import com.tiza.protocol.IDataProcess;
-import com.tiza.protocol.model.BackupMSG;
-import com.tiza.protocol.model.SendMSG;
-import com.tiza.protocol.model.header.Header;
-import com.tiza.protocol.model.header.M2Header;
+import com.tiza.model.BackupMSG;
+import com.tiza.model.SendMSG;
+import com.tiza.model.header.Header;
+import com.tiza.model.header.M2Header;
 import com.tiza.util.CommonUtil;
+import com.tiza.util.GpsCorrectUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
 import com.tiza.util.entity.VehicleInfo;
 import com.tiza.util.task.impl.MSGSenderTask;
-import com.tiza.util.ws.impl.M2Sender;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
@@ -44,10 +44,12 @@ public class M2DataProcess implements IDataProcess {
     @Resource
     protected ICache vehicleCacheProvider;
 
-    @Resource
-    private ICache monitorCacheProvider;
-
     protected int cmdId = 0xFF;
+
+    @Override
+    public void init() {
+        m2CMDCacheProvider.put(cmdId, this);
+    }
 
     @Override
     public M2Header dealHeader(byte[] bytes) {
@@ -199,9 +201,9 @@ public class M2DataProcess implements IDataProcess {
         }
     };
 
-    protected boolean isDoubleACK(int cmd){
+    protected boolean isDoubleACK(int cmd) {
 
-        if (DOUBLE_ACK_CMDS.contains(cmd)){
+        if (DOUBLE_ACK_CMDS.contains(cmd)) {
             return Boolean.TRUE;
         }
 
@@ -210,13 +212,7 @@ public class M2DataProcess implements IDataProcess {
 
     protected void put(String terminalId, int cmd, byte[] content) {
 
-        // 重点监控
-        if (monitorCacheProvider.containsKey(terminalId)) {
-            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", terminalId, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
-        }
         MSGSenderTask.send(new SendMSG(terminalId, cmd, content));
-        // 持久化数据库
-        toDB(terminalId, cmd, 1, content);
     }
 
     public void send(int cmd, M2Header m2Header) {
@@ -225,7 +221,8 @@ public class M2DataProcess implements IDataProcess {
 
         if (ACK_CMDS.contains(cmd)) {
             waitACKCacheProvider.put(m2Header.getSerial(), new BackupMSG(m2Header.getSerial(), new Date(),
-                    m2Header.getTerminalId(), cmd, content));
+                    m2Header.getTerminalId(), cmd, content,
+                    Constant.Protocol.M2_REPEAT_COUNT, Constant.Protocol.M2_REPEAT_TIME));
         }
         put(m2Header.getTerminalId(), cmd, content);
     }
@@ -236,7 +233,8 @@ public class M2DataProcess implements IDataProcess {
 
         if (ACK_CMDS.contains(cmd)) {
             BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
-                    m2Header.getTerminalId(), cmd, content);
+                    m2Header.getTerminalId(), cmd, content,
+                    Constant.Protocol.M2_REPEAT_COUNT, Constant.Protocol.M2_REPEAT_TIME);
             backupMSG.setId(id);
 
             waitACKCacheProvider.put(m2Header.getSerial(), backupMSG);
@@ -254,14 +252,15 @@ public class M2DataProcess implements IDataProcess {
     protected Position renderPosition(byte[] bytes) {
 
         if (bytes.length < 19) {
-            logger.warn("长度不足，无法获取位置信息！");
+            logger.error("长度不足，无法获取位置信息！");
+            return null;
         }
 
         ByteBuf buf = Unpooled.copiedBuffer(bytes);
         long lat = buf.readUnsignedInt();
         long lng = buf.readUnsignedInt();
-        int speed = buf.readByte();
-        int direction = buf.readByte();
+        int speed = buf.readUnsignedByte();
+        int direction = buf.readUnsignedByte();
         byte[] heightBytes = new byte[2];
         buf.readBytes(heightBytes);
         int height = CommonUtil.renderHeight(heightBytes);
@@ -287,6 +286,8 @@ public class M2DataProcess implements IDataProcess {
         private Long lat;
         private Double lngD;
         private Double latD;
+        private Double enLngD;
+        private Double enLatD;
 
         private Integer speed;
         private Integer direction;
@@ -325,7 +326,7 @@ public class M2DataProcess implements IDataProcess {
 
         public Double getLngD() {
             double d = this.lng / 1000000.0;
-            lngD = CommonUtil.keepDecimal(d, 2);
+            lngD = CommonUtil.keepDecimal(d, 6);
             return lngD;
         }
 
@@ -335,8 +336,16 @@ public class M2DataProcess implements IDataProcess {
 
         public Double getLatD() {
             double d = this.lat / 1000000.0;
-            latD = CommonUtil.keepDecimal(d, 2);
+            latD = CommonUtil.keepDecimal(d, 6);
             return latD;
+        }
+
+        public Double getEnLngD() {
+            return CommonUtil.keepDecimal(GpsCorrectUtil.transform(latD, lngD).getLng(), 6);
+        }
+
+        public Double getEnLatD() {
+            return CommonUtil.keepDecimal(GpsCorrectUtil.transform(latD, lngD).getLat(), 6);
         }
 
         public void setLatD(Double latD) {
@@ -639,8 +648,8 @@ public class M2DataProcess implements IDataProcess {
             {
                 this.put("Lat", position.getLatD());
                 this.put("Lng", position.getLngD());
-                //this.put("EncryptLat", );
-                //this.put("EncryptLng", );
+                this.put("EncryptLat", position.getEnLatD());
+                this.put("EncryptLng", position.getEnLngD());
                 this.put("Speed", position.getSpeed());
                 this.put("Direction", position.getDirection());
                 this.put("GpsTime", position.getDateTime());
@@ -730,18 +739,4 @@ public class M2DataProcess implements IDataProcess {
                 Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
                 valueMap, whereMap);
     }
-
-    public void toDB(String terminal, int cmd, int flow, byte[] content) {
-
-        Map map = new HashMap() {{
-            this.put("DeviceId", terminal);
-            this.put("ReceiveTime", new Date());
-            this.put("DataFlow", flow);
-            this.put("Instruction", CommonUtil.toHex(cmd));
-            this.put("RawData", CommonUtil.bytesToStr(content));
-        }};
-
-        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER, CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_RAWDATA, new Date()), map);
-    }
-
 }

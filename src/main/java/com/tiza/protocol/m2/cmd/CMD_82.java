@@ -1,16 +1,14 @@
 package com.tiza.protocol.m2.cmd;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.BackupMSG;
-import com.tiza.protocol.model.header.Header;
+import com.tiza.model.BackupMSG;
+import com.tiza.model.header.Header;
 import com.tiza.util.CommonUtil;
-import com.tiza.util.cache.ICache;
 import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

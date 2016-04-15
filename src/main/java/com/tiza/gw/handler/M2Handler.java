@@ -1,15 +1,12 @@
 package com.tiza.gw.handler;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.header.M2Header;
-import com.tiza.protocol.model.pipeline.MSGPipeline;
-import com.tiza.protocol.model.pipeline.MSGUDPPipeline;
+import com.tiza.model.header.M2Header;
+import com.tiza.model.pipeline.MSGPipeline;
+import com.tiza.model.pipeline.MSGUDPPipeline;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.DateUtil;
-import com.tiza.util.JacksonUtil;
 import com.tiza.util.cache.ICache;
-import com.tiza.util.config.Constant;
-import com.tiza.util.entity.VehicleInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,8 +18,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Description: M2Handler
@@ -68,18 +63,21 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
 
+        /**
+        if (!vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
+            logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
+            return;
+        }
+         */
+
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
             logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
             return;
         }
-        if (!vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
-            logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
-            return;
-        }
 
         // 数据入库
-        process.toDB(m2Header.getTerminalId(), m2Header.getCmd(), 0, bytes);
+        CommonUtil.toRawData(m2Header.getTerminalId(), m2Header.getCmd(), 0, bytes);
 
         // 重点监控
         if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {

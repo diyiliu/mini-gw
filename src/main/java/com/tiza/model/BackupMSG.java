@@ -1,4 +1,4 @@
-package com.tiza.protocol.model;
+package com.tiza.model;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,17 +15,24 @@ public class BackupMSG {
     private Date sendTime;
     private String terminal;
     private int cmd;
+
+    private int repeatCount;
+    private int repeatTime;
+
     private AtomicLong count = new AtomicLong(0);
     private byte[] content;
 
     public BackupMSG() {
     }
 
-    public BackupMSG(int serial, Date sendTime, String terminal, int cmd, byte[] content) {
+    public BackupMSG(int serial, Date sendTime, String terminal, int cmd, byte[] content,
+                     int repeatCount, int repeatTime) {
         this.serial = serial;
         this.sendTime = sendTime;
         this.terminal = terminal;
         this.cmd = cmd;
+        this.repeatCount = repeatCount;
+        this.repeatTime = repeatTime;
         this.content = content;
     }
 
@@ -83,5 +90,21 @@ public class BackupMSG {
 
     public void setCount(AtomicLong count) {
         this.count = count;
+    }
+
+    public int getRepeatCount() {
+        return repeatCount;
+    }
+
+    public void setRepeatCount(int repeatCount) {
+        this.repeatCount = repeatCount;
+    }
+
+    public int getRepeatTime() {
+        return repeatTime;
+    }
+
+    public void setRepeatTime(int repeatTime) {
+        this.repeatTime = repeatTime;
     }
 }

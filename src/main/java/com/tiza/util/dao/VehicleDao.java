@@ -2,6 +2,7 @@ package com.tiza.util.dao;
 
 import com.tiza.util.config.Constant;
 import com.tiza.util.dao.base.BaseDao;
+import com.tiza.util.entity.Instruction;
 import com.tiza.util.entity.VehicleInfo;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,19 @@ public class VehicleDao extends BaseDao {
             vehicleInfo.setCreateTimeStr(rs.getString("CreateTime"));
 
             return vehicleInfo;
+        });
+    }
+
+    public List<Instruction> selectInstruction(String terminalId, int status) {
+        String sql = Constant.getSQL("selectInstruction");
+
+        return jdbcTemplate.query(sql, new Object[]{terminalId, status},(ResultSet rs, int rowNum) -> {
+            Instruction instruction = new Instruction();
+            instruction.setId(rs.getInt("Id"));
+            instruction.setParamId(rs.getInt("ParamId"));
+            instruction.setParamValue(rs.getString("ParamValue"));
+
+            return instruction;
         });
     }
 }

@@ -1,6 +1,6 @@
 package com.tiza.util.task.impl;
 
-import com.tiza.protocol.model.pipeline.MSGPipeline;
+import com.tiza.model.pipeline.MSGPipeline;
 import com.tiza.util.DateUtil;
 import com.tiza.util.cache.ICache;
 import com.tiza.util.task.ITask;

@@ -14,4 +14,17 @@
                 ON t.`Id` = c.`TerminalId`
         ]]>
     </sql>
+
+    <sql id="selectInstruction" description="查询未下发的指令（雅迅移动终端）" fieldType="">
+        <![CDATA[
+            SELECT
+              c.`Id`,
+              c.`ParamId`,
+              c.`ParamValue`
+            FROM
+              gpsinstruction c
+            WHERE c.`DeviceId` = ?
+              AND c.`ResponseStatus` = ?
+        ]]>
+    </sql>
 </root>

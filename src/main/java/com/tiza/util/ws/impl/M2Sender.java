@@ -1,11 +1,12 @@
 package com.tiza.util.ws.impl;
 
 import com.tiza.protocol.m2.M2DataProcess;
-import com.tiza.protocol.model.BackupMSG;
-import com.tiza.protocol.model.header.M2Header;
-import com.tiza.protocol.model.pipeline.MSGPipeline;
+import com.tiza.model.BackupMSG;
+import com.tiza.model.header.M2Header;
+import com.tiza.model.pipeline.MSGPipeline;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.cache.ICache;
+import com.tiza.util.config.Constant;
 import com.tiza.util.ws.IM2Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,8 @@ public class M2Sender implements IM2Sender {
         M2Header m2Header = (M2Header) pipeline.getHeader();
 
         BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
-                m2Header.getTerminalId(), cmd, m2DataProcess.toSendBytes(cmd, m2Header, paramId));
+                m2Header.getTerminalId(), cmd, m2DataProcess.toSendBytes(cmd, m2Header, paramId),
+                Constant.Protocol.M2_REPEAT_COUNT, Constant.Protocol.M2_REPEAT_TIME);
         backupMSG.setId(id);
 
         String key = terminalId + CommonUtil.toHex(cmd) + CommonUtil.toHex(paramId);
@@ -100,7 +102,8 @@ public class M2Sender implements IM2Sender {
         M2Header m2Header = (M2Header) pipeline.getHeader();
 
         BackupMSG backupMSG = new BackupMSG(m2Header.getSerial(), new Date(),
-                m2Header.getTerminalId(), cmd, m2DataProcess.toSendBytes(cmd, m2Header, url));
+                m2Header.getTerminalId(), cmd, m2DataProcess.toSendBytes(cmd, m2Header, url),
+                Constant.Protocol.M2_REPEAT_COUNT, Constant.Protocol.M2_REPEAT_TIME);
         backupMSG.setId(id);
 
         String key = terminalId + CommonUtil.toHex(cmd);

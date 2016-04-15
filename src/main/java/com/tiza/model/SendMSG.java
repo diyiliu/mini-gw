@@ -1,4 +1,4 @@
-package com.tiza.protocol.model;
+package com.tiza.model;
 
 /**
  * Description: SendMSG

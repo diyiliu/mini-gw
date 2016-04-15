@@ -56,6 +56,7 @@
         <property name="protocols">
             <list>
                 <value>com.tiza.protocol.m2.M2DataProcess</value>
+                <value>com.tiza.protocol.mobile.MobileDataProcess</value>
             </list>
         </property>
     </bean>

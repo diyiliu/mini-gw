@@ -1,6 +1,8 @@
 package com.tiza.util.listener;
 
+import com.tiza.protocol.IDataProcess;
 import com.tiza.protocol.m2.M2DataProcess;
+import com.tiza.protocol.mobile.MobileDataProcess;
 import com.tiza.util.SpringUtil;
 import com.tiza.util.cache.ICache;
 import org.slf4j.Logger;
@@ -34,16 +36,8 @@ public class CMDInitializer implements ApplicationListener {
 
             for (Iterator iter = parses.keySet().iterator(); iter.hasNext(); ) {
                 String key = (String) iter.next();
-                Object process = parses.get(key);
-
-                if (process instanceof M2DataProcess) {
-                    M2DataProcess m2Process = (M2DataProcess) process;
-
-                    if (0xFF != m2Process.getCmdId()) {
-                        ICache cmdCache = m2Process.getM2CMDCacheProvider();
-                        cmdCache.put(m2Process.getCmdId(), m2Process);
-                    }
-                }
+                IDataProcess process = (IDataProcess) parses.get(key);
+                process.init();
             }
         }
     }

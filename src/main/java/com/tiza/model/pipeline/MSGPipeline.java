@@ -1,6 +1,6 @@
-package com.tiza.protocol.model.pipeline;
+package com.tiza.model.pipeline;
 
-import com.tiza.protocol.model.header.Header;
+import com.tiza.model.header.Header;
 
 import java.util.Date;
 

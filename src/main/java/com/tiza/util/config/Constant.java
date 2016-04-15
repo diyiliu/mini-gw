@@ -23,6 +23,15 @@ import java.util.Map;
  */
 public final class Constant {
 
+    public enum Protocol{
+        ;
+        public final static int M2_REPEAT_COUNT = 2;
+        public final static int M2_REPEAT_TIME = 8;
+        public final static int MOBILE_REPEAT_COUNT = 2;
+        public final static int MOBILE_REPEAT_TIME = 10;
+    }
+
+
     public enum DBInfo {
         ;
         public final static String DB_CLOUD_USER = "cloudgps";
@@ -38,7 +47,7 @@ public final class Constant {
                     " `Id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
                             "  `DeviceId` bigint(20) NOT NULL COMMENT 'GPS设备编号'," +
                             "  `ReceiveTime` datetime NOT NULL COMMENT '数据接收时间'," +
-                            "  `DataFlow` bit(1) DEFAULT NULL COMMENT '数据流向(0上行;1下行;)'," +
+                            "  `DataFlow` tinyint DEFAULT NULL COMMENT '数据流向(0上行;1下行;)'," +
                             "  `Instruction` varchar(8) DEFAULT NULL COMMENT '指令'," +
                             "  `RawData` text COMMENT '原始数据'," +
                             "  PRIMARY KEY (`Id`)",
