@@ -1,11 +1,11 @@
 package com.tiza.gw.handler;
 
 import com.tiza.model.BackupMSG;
-import com.tiza.protocol.mobile.MobileDataProcess;
 import com.tiza.model.Tlv;
 import com.tiza.model.header.MobileHeader;
 import com.tiza.model.pipeline.MSGPipeline;
 import com.tiza.model.pipeline.MSGTCPPipeline;
+import com.tiza.protocol.mobile.MobileDataProcess;
 import com.tiza.util.CommonUtil;
 import com.tiza.util.DateUtil;
 import com.tiza.util.cache.ICache;
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,11 +53,8 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
     @Resource
     private VehicleDao vehicleDao;
 
-    private ChannelHandlerContext ctx;
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        this.ctx = ctx;
         String key = ctx.channel().remoteAddress().toString().trim().replaceFirst("/", "");
         logger.info("[{}]建立连接...", key);
 
@@ -89,7 +85,7 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
 
         // 重点监控
         //if (monitorCacheProvider.containsKey(devIMEI)) {
-            logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(mobileHeader.getCmd()), CommonUtil.bytesToString(bytes));
+        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(mobileHeader.getCmd()), CommonUtil.bytesToString(bytes));
         //}
         Date now = new Date();
         if (!onlineCacheProvider.containsKey(devIMEI)) {
@@ -102,7 +98,7 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         // 响应
-        response(mobileHeader);
+        response(mobileHeader, ctx);
 
         // 过滤重复数据
         if (onlineCacheProvider.containsKey(devIMEI)) {
@@ -141,7 +137,7 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
-    private void response(MobileHeader mobileHeader) {
+    private void response(MobileHeader mobileHeader, ChannelHandlerContext ctx) {
 
         String terminalId = mobileHeader.getDevIMEI();
         // 查询待下发的指令信息
@@ -150,10 +146,10 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
         if (insList.isEmpty()) {
 
             // 中心无后续指令
-            ack(mobileHeader, 0x00);
+            ack(mobileHeader, 0x00, ctx);
         } else {
             // 中心有命令下发
-            ack(mobileHeader, 0x01);
+            ack(mobileHeader, 0x01, ctx);
 
             EventLoop eventLoop = ctx.channel().eventLoop();
             eventLoop.execute(() -> {
@@ -189,13 +185,13 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
                 ByteBuf buf = Unpooled.copiedBuffer(bytes);
                 byte[] array = toSendBytes(buf.array(), 0x12, terminalId);
 
-                send(mobileHeader.getDevIMEI(), 0x12, array);
+                send(ctx, mobileHeader.getDevIMEI(), 0x12, array);
             });
         }
     }
 
     // 收到应答
-    private void ack(MobileHeader mobileHeader, int result) {
+    private void ack(MobileHeader mobileHeader, int result, ChannelHandlerContext ctx) {
 
         ByteBuf buf = Unpooled.buffer(7);
         buf.writeByte(result);
@@ -203,7 +199,7 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
 
         byte[] content = toSendBytes(buf.array(), mobileHeader.getCmd(), mobileHeader.getDevIMEI());
 
-        send(mobileHeader.getDevIMEI(), mobileHeader.getCmd(), content);
+        send(ctx, mobileHeader.getDevIMEI(), mobileHeader.getCmd(), content);
     }
 
     // 组装下发数据的协议头
@@ -221,10 +217,10 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
     }
 
     // 数据下发
-    private void send(String devIMEI, int cmd, byte[] content) {
+    private void send(ChannelHandlerContext ctx, String devIMEI, int cmd, byte[] content) {
         // 重点监控
         //if (monitorCacheProvider.containsKey(devIMEI)) {
-            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+        logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
         //}
 
         if (ctx.channel().isWritable()) {
