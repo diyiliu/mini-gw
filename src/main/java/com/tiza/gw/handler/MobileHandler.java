@@ -84,9 +84,9 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
         }
 
         // 重点监控
-        //if (monitorCacheProvider.containsKey(devIMEI)) {
-        logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(mobileHeader.getCmd()), CommonUtil.bytesToString(bytes));
-        //}
+        if (monitorCacheProvider.containsKey(devIMEI)) {
+            logger.info("收到消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(mobileHeader.getCmd()), CommonUtil.bytesToString(bytes));
+        }
         Date now = new Date();
         if (!onlineCacheProvider.containsKey(devIMEI)) {
             logger.info("终端上线[{}], 上线时间[{}]", devIMEI, DateUtil.dateToString(now));
@@ -219,9 +219,9 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
     // 数据下发
     private void send(ChannelHandlerContext ctx, String devIMEI, int cmd, byte[] content) {
         // 重点监控
-        //if (monitorCacheProvider.containsKey(devIMEI)) {
-        logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
-        //}
+        if (monitorCacheProvider.containsKey(devIMEI)) {
+            logger.info("下发消息，终端[{}], 命令[{}], 原始数据[{}]", devIMEI, CommonUtil.toHex(cmd), CommonUtil.bytesToString(content));
+        }
 
         if (ctx.channel().isWritable()) {
             ctx.writeAndFlush(Unpooled.copiedBuffer(content));
