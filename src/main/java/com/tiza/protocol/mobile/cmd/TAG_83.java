@@ -72,7 +72,6 @@ public class TAG_83 extends MobileDataProcess {
          */
 
         String url = "http://api.cellocation.com/loc/";
-
         Map params = new HashedMap();
         params.put("cl", cl.substring(0, cl.length() - 1));
         params.put("coord", "wgs84");
