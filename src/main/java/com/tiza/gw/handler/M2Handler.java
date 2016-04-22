@@ -63,21 +63,19 @@ public class M2Handler extends ChannelInboundHandlerAdapter {
 
         M2Header m2Header = m2DataProcess.dealHeader(bytes);
 
-        /**
+        // 数据入库
+        CommonUtil.toRawData(m2Header.getTerminalId(), m2Header.getCmd(), 0, bytes);
+
         if (!vehicleCacheProvider.containsKey(m2Header.getTerminalId())) {
             logger.warn("车辆未注册！[{}]", m2Header.getTerminalId());
             return;
         }
-         */
 
         M2DataProcess process = (M2DataProcess) m2DataProcess.getM2CMDCacheProvider().get(m2Header.getCmd());
         if (process == null) {
             logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(m2Header.getCmd()));
             return;
         }
-
-        // 数据入库
-        CommonUtil.toRawData(m2Header.getTerminalId(), m2Header.getCmd(), 0, bytes);
 
         // 重点监控
         if (monitorCacheProvider.containsKey(m2Header.getTerminalId())) {

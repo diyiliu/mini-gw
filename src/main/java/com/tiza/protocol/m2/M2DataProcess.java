@@ -577,6 +577,7 @@ public class M2DataProcess implements IDataProcess {
         private Integer gsmSignal;
         private Double voltage;
         private Integer satellite;
+        private Map canValues;
 
         public Parameter() {
 
@@ -631,6 +632,14 @@ public class M2DataProcess implements IDataProcess {
 
         public void setSatellite(Integer satellite) {
             this.satellite = satellite;
+        }
+
+        public Map getCanValues() {
+            return canValues;
+        }
+
+        public void setCanValues(Map canValues) {
+            this.canValues = canValues;
         }
     }
 
@@ -693,8 +702,8 @@ public class M2DataProcess implements IDataProcess {
             {
                 this.put("Lat", position.getLatD());
                 this.put("Lng", position.getLngD());
-                //this.put("EncryptLat", );
-                //this.put("EncryptLng", );
+                this.put("EncryptLat", position.getEnLatD());
+                this.put("EncryptLng", position.getEnLngD());
                 this.put("Speed", position.getSpeed());
                 this.put("Direction", position.getDirection());
                 this.put("GpsTime", position.getDateTime());
@@ -706,17 +715,11 @@ public class M2DataProcess implements IDataProcess {
                 this.put("GpsModule", status.getGpsFault());
                 this.put("GpsAntenna", status.getLoseAntenna());
 
-                if (parameter.getGsmSignal() != null) {
-                    this.put("GsmSignal", parameter.getGsmSignal());
-                }
-                if (parameter.getSatellite() != null) {
-
-                    this.put("GpsSatellite", parameter.getSatellite());
-                }
-                if (parameter.getAccHour() != null) {
-
-                    this.put("AccOnHours", parameter.getAccHour());
-                }
+                this.put("AccOnHours", parameter.getAccHour());
+                this.put("GsmSignal", parameter.getGsmSignal());
+                this.put("GpsVoltage", parameter.getVoltage());
+                this.put("GpsSatellite", parameter.getSatellite());
+                this.putAll(parameter.getCanValues());
 
             }
         };

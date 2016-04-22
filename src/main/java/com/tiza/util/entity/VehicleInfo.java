@@ -15,6 +15,7 @@ public class VehicleInfo {
     private String terminalId;
     private String name;
     private String license;
+    private String softVersion;
     private Date createTime;
     private String createTimeStr;
 
@@ -49,6 +50,14 @@ public class VehicleInfo {
 
     public void setLicense(String license) {
         this.license = license;
+    }
+
+    public String getSoftVersion() {
+        return softVersion;
+    }
+
+    public void setSoftVersion(String softVersion) {
+        this.softVersion = softVersion;
     }
 
     public Date getCreateTime() {

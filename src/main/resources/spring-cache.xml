@@ -15,5 +15,7 @@
 
     <bean id="vehicleCacheProvider" class="com.tiza.util.cache.ram.RamCacheProvider"/>
 
+    <bean id="canCacheProvider" class="com.tiza.util.cache.ram.RamCacheProvider"/>
+
     <bean id="monitorCacheProvider" class="com.tiza.util.cache.ram.RamCacheProvider"/>
 </beans>

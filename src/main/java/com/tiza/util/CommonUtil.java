@@ -5,6 +5,9 @@ import com.tiza.util.config.Constant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -348,6 +351,83 @@ public class CommonUtil {
     public static String monthTable(String table, Date date) {
 
         return table + DateUtil.dateToString(date, "%1$tY%1$tm");
+    }
+
+
+    public static int getBits(int val, int start, int len) {
+        int left = 31 - start;
+        int right = 31 - len + 1;
+        return (val << left) >>> right;
+    }
+
+    public static byte[] byteToByte(byte[] workParamBytes, int start, int len, String endian) {
+        byte[] tempBytes = new byte[len];
+        int totalLen = start + len - 1;
+
+        if (endian.equalsIgnoreCase("little")) {
+            int tempI = 0;
+            for (int j = totalLen; j >= start; j--) {// 小端模式
+                tempBytes[tempI] = workParamBytes[j];
+                tempI++;
+            }
+        } else {
+            int tempI = 0;
+            for (int j = start; j <= totalLen; j++) {// 大端模式
+                tempBytes[tempI] = workParamBytes[j];
+                tempI++;
+            }
+        }
+        return tempBytes;
+    }
+
+    public static int byte2int(byte[] array) {
+
+        if (array.length < 4) {
+            return byte2short(array);
+        }
+
+        int r = 0;
+        for (int i = 0; i < array.length; i++) {
+            r <<= 8;
+            r |= array[i] & 0xFF;
+        }
+
+        return r;
+    }
+
+    public static short byte2short(byte[] array) {
+
+        short r = 0;
+        for (int i = 0; i < array.length; i++) {
+            r <<= 8;
+            r |= array[i] & 0xFF;
+        }
+
+        return r;
+    }
+
+    /**
+     * 解析算数表达式
+     *
+     * @param exp
+     * @return
+     */
+    public static String parseExp(int val, String exp, String type) throws ScriptException {
+
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName("JavaScript");
+
+        String retVal = "";
+        if (type.equalsIgnoreCase("hex")) {
+            retVal = String.format("%02X", val);
+        } else if (type.equalsIgnoreCase("decimal")) {
+            retVal = engine.eval(val + exp).toString();
+        } else {
+            //表达式解析会出现类型问题
+            retVal = engine.eval(val + exp).toString();
+        }
+
+        return retVal;
     }
 
     public static void main(String[] args) {

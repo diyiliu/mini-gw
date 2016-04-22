@@ -62,12 +62,23 @@ public class MobileDataProcess implements IDataProcess {
         MobileHeader mobileHeader = new MobileHeader(cmd, devIMEI, length);
 
         List<Tlv> tlvList = new ArrayList<>();
+        boolean has81 = false;
         while (buf.readableBytes() > 1) {
             int tag = buf.readUnsignedByte();
             int len = buf.readUnsignedByte();
 
             byte[] value = new byte[len];
             buf.readBytes(value);
+
+
+            if (tag == 0x81) {
+                has81 = true;
+            }
+            // 有81指令时，过滤83指令
+            if (has81 && tag == 0x83) {
+                continue;
+            }
+
             tlvList.add(new Tlv(tag, length, value));
         }
 
@@ -87,7 +98,7 @@ public class MobileDataProcess implements IDataProcess {
 
             Map valueMap = new HashMap() {
                 {
-                    this.put("ResponseStatus", value == 0x00? 11: 12);
+                    this.put("ResponseStatus", value == 0x00 ? 11 : 12);
                     this.put("ResponseDate", new Date());
                 }
             };
@@ -117,7 +128,7 @@ public class MobileDataProcess implements IDataProcess {
     }
 
 
-    protected byte[] toTLV(byte[] bytes, int tag){
+    protected byte[] toTLV(byte[] bytes, int tag) {
 
         ByteBuf buf = Unpooled.buffer(bytes.length + 2);
         buf.writeByte(tag);
@@ -219,15 +230,27 @@ public class MobileDataProcess implements IDataProcess {
             this.lat = lat;
         }
 
+        public void setLngD(Double lngD) {
+            this.lngD = lngD;
+        }
+
+        public void setLatD(Double latD) {
+            this.latD = latD;
+        }
+
         public Double getLngD() {
-            double d = this.lng / 1000000.0;
-            lngD = CommonUtil.keepDecimal(d, 6);
+            if (lngD == null) {
+                double d = this.lng / 1000000.0;
+                lngD = CommonUtil.keepDecimal(d, 6);
+            }
             return lngD;
         }
 
         public Double getLatD() {
-            double d = this.lat / 1000000.0;
-            latD = CommonUtil.keepDecimal(d, 6);
+            if (latD == null) {
+                double d = this.lat / 1000000.0;
+                latD = CommonUtil.keepDecimal(d, 6);
+            }
             return latD;
         }
 

@@ -3,6 +3,8 @@ package com.tiza.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 /**
  * Description: JacksonUtil
  * Author: DIYILIU
@@ -22,5 +24,10 @@ public class JacksonUtil {
             e.printStackTrace();
         }
         return rs;
+    }
+
+    public static <T> T  toObject(String content, Class<T> clazz) throws IOException {
+
+        return (T) mapper.readValue(content, clazz);
     }
 }

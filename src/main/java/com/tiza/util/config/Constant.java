@@ -1,14 +1,11 @@
 package com.tiza.util.config;
 
 import com.tiza.util.entity.TableSchema;
+import org.dom4j.Document;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
 import org.springframework.core.io.ClassPathResource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import java.util.Map;
  */
 public final class Constant {
 
-    public enum Protocol{
+    public enum Protocol {
         ;
         public final static int M2_REPEAT_COUNT = 2;
         public final static int M2_REPEAT_TIME = 8;
@@ -70,6 +67,7 @@ public final class Constant {
                             "  `LocationStatus` bit(1) DEFAULT NULL COMMENT 'GPS定位状态(0 GPS未定位;1 GPS已定位)'," +
                             "  `AccOnHours` decimal(8,2) DEFAULT NULL COMMENT '终端累计工作时间'," +
                             "  `GsmSignal` tinyint(4) DEFAULT NULL COMMENT 'GSM信号强度(0-32)'," +
+                            "  `GpsVoltage` decimal(4,2) DEFAULT NULL COMMENT 'GPS电压值'," +
                             "  `GpsStatellite` tinyint(4) DEFAULT NULL COMMENT 'GPS卫星数'," +
                             "  `PowerOff` bit(1) DEFAULT NULL COMMENT '断电报警'," +
                             "  `LowVoltage` bit(1) DEFAULT NULL COMMENT '低电压报警'," +
@@ -81,7 +79,7 @@ public final class Constant {
         }};
     }
 
-    public void init(){
+    public void init() {
         initSqlCache();
 
     }
@@ -90,38 +88,34 @@ public final class Constant {
 
     private static Map<String, String> sqlCache = new HashMap<>();
 
-    public static String getSQL(String sqlId){
+    public static String getSQL(String sqlId) {
         return sqlCache.get(sqlId);
     }
 
-    public void initSqlCache(){
+    public void initSqlCache() {
         sqlCache.clear();
+
         InputStream is = null;
         try {
-             is = new ClassPathResource(SQL_FILE).getInputStream();
-            DocumentBuilder domBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = domBuilder.parse(is);
-            Element root = doc.getDocumentElement();
+            is = new ClassPathResource(SQL_FILE).getInputStream();
+            SAXReader saxReader = new SAXReader();
+            Document document = saxReader.read(is);
 
-            NodeList sqlList = root.getElementsByTagName("sql");
-            if (sqlList != null){
-                for(int i = 0; i < sqlList.getLength(); i++){
-                    Node node = sqlList.item(i);
-                    String id = node.getAttributes().getNamedItem("id").getNodeValue();
-                    //String description = node.getAttributes().getNamedItem("description").getNodeValue();
-                    String content = node.getTextContent().trim();
-                    sqlCache.put(id, content);
-                }
+            List<Node> sqlList = document.selectNodes("root/sql");
+            for (Node sqlNode : sqlList) {
+                String id = sqlNode.valueOf("@id");
+                String content = sqlNode.getText().trim();
+                sqlCache.put(id, content);
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if (is != null){
-                try {
+        } finally {
+            try {
+                if (is != null) {
                     is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

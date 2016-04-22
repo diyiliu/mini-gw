@@ -63,4 +63,9 @@ public class MainTest {
 
         System.out.println(CommonUtil.bytesToString(array));
     }
+
+    @Test
+    public void testJson(){
+
+    }
 }

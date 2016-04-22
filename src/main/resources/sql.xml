@@ -4,14 +4,19 @@
         <![CDATA[
             SELECT
               c.`Id`,
-              t.`DeviceId`,
               c.`NAME`,
               c.`License`,
-              c.`CreateTime`
+              c.`CreateTime`,
+              t.`DeviceId`,
+              t.`SoftVersion`,
+              t.`ServiceBegin`,
+              t.`ServiceEnd`
             FROM
               vehicle c
               INNER JOIN terminal t
                 ON t.`Id` = c.`TerminalId`
+                AND t.`ServiceBegin` <= NOW()
+                AND t.`ServiceEnd` >= NOW()
         ]]>
     </sql>
 
@@ -25,6 +30,19 @@
               gpsinstruction c
             WHERE c.`DeviceId` = ?
               AND c.`ResponseStatus` = ?
+        ]]>
+    </sql>
+
+    <sql id="selectCan" description="查询功能集信息" fieldType="">
+        <![CDATA[
+            SELECT
+              c.`SoftName`,
+              c.`SoftVersion`,
+              c.`Description`,
+              c.`DcsFunctionSet`,
+              c.`ModelCode`
+            FROM
+              gpssoftversion c
         ]]>
     </sql>
 </root>

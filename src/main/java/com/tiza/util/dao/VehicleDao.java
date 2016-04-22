@@ -28,6 +28,7 @@ public class VehicleDao extends BaseDao {
             vehicleInfo.setTerminalId(rs.getString("DeviceId"));
             vehicleInfo.setName(rs.getString("NAME"));
             vehicleInfo.setLicense(rs.getString("License"));
+            vehicleInfo.setSoftVersion(rs.getString("SoftVersion"));
             vehicleInfo.setCreateTimeStr(rs.getString("CreateTime"));
 
             return vehicleInfo;

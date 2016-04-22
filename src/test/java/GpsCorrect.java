@@ -1,3 +1,5 @@
+import org.junit.Test;
+
 /**
  * Description: GpsCorrect
  * Author: DIYILIU
@@ -48,5 +50,18 @@ public class GpsCorrect {
         ret += (20.0 * Math.sin(x * pi) + 40.0 * Math.sin(x / 3.0 * pi)) * 2.0 / 3.0;
         ret += (150.0 * Math.sin(x / 12.0 * pi) + 300.0 * Math.sin(x / 30.0 * pi)) * 2.0 / 3.0;
         return ret;
+    }
+
+    @Test
+    public void test(){
+
+        double[] a = new double[2];
+        double[] b = new double[2];
+
+        transform(34.287109, 117.264587, a);
+        transform(34.289204, 117.261551, b);
+
+        System.out.println(a[0] + ":" + a[1]);
+        System.out.println(b[0] + ":" + b[1]);
     }
 }

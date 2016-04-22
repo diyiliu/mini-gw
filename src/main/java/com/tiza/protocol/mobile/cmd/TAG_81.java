@@ -23,6 +23,8 @@ public class TAG_81 extends MobileDataProcess {
         MobileHeader mobileHeader = (MobileHeader) header;
 
         Position position = renderPosition(content);
+        // GPS定位
+        position.setMode(1);
 
         toDB(mobileHeader.getDevIMEI(), position);
     }

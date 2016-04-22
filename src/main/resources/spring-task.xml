@@ -109,6 +109,24 @@
         <property name="repeatInterval" value="300000"/>
     </bean>
 
+    <!-- 功能集缓存 （间隔：15分钟）-->
+    <bean id="refreshCanTask" class="com.tiza.util.task.impl.RefreshCanTask"/>
+    <bean id="refreshCanJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="refreshCanTask"/>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="refreshCanTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="refreshCanJobDetail"/>
+        <property name="startDelay" value="10000"/>
+        <property name="repeatInterval" value="900000"/>
+    </bean>
+
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
@@ -117,6 +135,7 @@
                 <ref bean="keepAliveOnlineTrigger"/>
                 <ref bean="heartbeatSenderTrigger"/>
                 <ref bean="refreshVehicleTrigger"/>
+                <ref bean="refreshCanTrigger"/>
                 <ref bean="createMonthTableTrigger"/>
             </list>
         </property>
