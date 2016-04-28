@@ -753,6 +753,7 @@ public class M2DataProcess implements IDataProcess {
         valueMap.remove("GpsModule");
         valueMap.remove("GpsAntenna");
         valueMap.remove("GsmSignal");
+        valueMap.remove("GpsVoltage");
         valueMap.remove("GpsSatellite");
         valueMap.remove("WorkDataTime");
         // 插入工况月表
