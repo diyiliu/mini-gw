@@ -115,17 +115,10 @@ public class MobileHandler extends ChannelInboundHandlerAdapter {
         }
 
         List<Tlv> tlvList = mobileHeader.getContent();
-        boolean gpsLocate = false;
         for (Tlv tlv : tlvList) {
             MobileDataProcess process = (MobileDataProcess) mobileDataProcess.getMobileCMDCacheProvider().get(tlv.getTag());
             if (process == null) {
                 logger.error("找不到[命令{}]解析器！", CommonUtil.toHex(tlv.getTag()));
-                continue;
-            }
-            if (tlv.getTag() == 0x81){
-                gpsLocate = true;
-            }
-            if (tlv.getTag() == 0x83 && gpsLocate){
                 continue;
             }
             process.parse(tlv.getValue(), mobileHeader);
