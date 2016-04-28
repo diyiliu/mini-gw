@@ -447,8 +447,7 @@ public class CommonUtil {
 
        // System.out.println(keepDecimal(12, 3));
 
-        System.out.println(renderHeight(new byte[]{(byte) Integer.parseInt("83", 16),
-                (byte) Integer.parseInt("E8", 16)}));
+        System.out.println(toHex(4353));
     }
 
 

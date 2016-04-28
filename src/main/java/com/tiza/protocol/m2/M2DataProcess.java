@@ -736,10 +736,28 @@ public class M2DataProcess implements IDataProcess {
                 CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_VEHICLETRACK, now),
                 valueMap);
 
+        valueMap.putAll(parameter.getCanValues());
         valueMap.put("WorkDataTime", position.getDateTime());
+
         // 更新当前位置表
         CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
                 Constant.DBInfo.DB_CLOUD_VEHICLEGPSINFO,
                 valueMap, whereMap);
+
+        valueMap.remove("Lat");
+        valueMap.remove("Lng");
+        valueMap.remove("Direction");
+        valueMap.remove("LocationStatus");
+        valueMap.remove("PowerOff");
+        valueMap.remove("LowVoltage");
+        valueMap.remove("GpsModule");
+        valueMap.remove("GpsAntenna");
+        valueMap.remove("GsmSignal");
+        valueMap.remove("GpsSatellite");
+        valueMap.remove("WorkDataTime");
+        // 插入工况月表
+        CommonUtil.dealToDb(Constant.DBInfo.DB_CLOUD_USER,
+                CommonUtil.monthTable(Constant.DBInfo.DB_CLOUD_VEHICLEWORKPARAM, new Date()),
+                valueMap);
     }
 }

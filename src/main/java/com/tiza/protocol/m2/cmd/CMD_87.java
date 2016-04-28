@@ -54,20 +54,20 @@ public class CMD_87 extends M2DataProcess {
         Map<Integer, byte[]> parameters = parseParameter(paramArray);
 
         Parameter param = new Parameter();
-        if (parameters.containsKey(0x01)) {
-            long accTime = CommonUtil.bytesToLong(parameters.get(0x01));
+        if (parameters.containsKey("01")) {
+            long accTime = CommonUtil.bytesToLong(parameters.get("01"));
             param.setAccTime(accTime);
         }
-        if (parameters.containsKey(0x02)) {
-            int gsmSignal = CommonUtil.getNoSin(parameters.get(0x02)[0]);
+        if (parameters.containsKey("02")) {
+            int gsmSignal = CommonUtil.getNoSin(parameters.get("02")[0]);
             param.setGsmSignal(gsmSignal);
         }
-        if (parameters.containsKey(0x03)) {
-            double voltage = CommonUtil.bytesToLong(parameters.get(0x03));
+        if (parameters.containsKey("03")) {
+            double voltage = CommonUtil.bytesToLong(parameters.get("03"));
             param.setVoltage(voltage);
         }
-        if (parameters.containsKey(0x04)) {
-            int satellite = CommonUtil.getNoSin(parameters.get(0x04)[0]);
+        if (parameters.containsKey("04")) {
+            int satellite = CommonUtil.getNoSin(parameters.get("04")[0]);
             param.setSatellite(satellite);
         }
 
@@ -84,8 +84,9 @@ public class CMD_87 extends M2DataProcess {
         }
         param.setCanValues(emptyValues);
 
-
         toDB(m2Header.getTerminalId(), position, status, param);
+
+        send(0x02, m2Header);
     }
 
     private Map parseParameter(byte[] content) {
@@ -103,7 +104,7 @@ public class CMD_87 extends M2DataProcess {
             byte[] bytes = new byte[length];
             byteBuf.readBytes(bytes);
 
-            parameters.put(id, bytes);
+            parameters.put(CommonUtil.toHex(id), bytes);
         }
 
         return parameters;
