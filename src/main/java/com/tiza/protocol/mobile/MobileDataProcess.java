@@ -70,11 +70,14 @@ public class MobileDataProcess implements IDataProcess {
             byte[] value = new byte[len];
             buf.readBytes(value);
 
-
             if (tag == 0x81) {
-                has81 = true;
+                Position position = renderPosition(value);
+                if (position.getLocate() == 1) {
+                    has81 = true;
+                }
             }
-            // 有81指令时，过滤83指令
+
+            // 81指令有效定位时，过滤83指令
             if (has81 && tag == 0x83) {
                 continue;
             }

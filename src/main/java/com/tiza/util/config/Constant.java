@@ -83,7 +83,7 @@ public final class Constant {
                         "vehicleworkparam",
                         " `Id` int(10) unsigned NOT NULL AUTO_INCREMENT," +
                                 "  `VehicleId` int(11) NOT NULL," +
-                                "  `GpsTime` datetime NOT NULL," +
+                                "  `WorkDataTime` datetime NOT NULL," +
                                 "  `SystemTime` datetime NOT NULL," +
                                 "  `EncryptLat` decimal(9,6) NOT NULL," +
                                 "  `EncryptLng` decimal(9,6) NOT NULL," +
